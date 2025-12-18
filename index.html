@@ -2,94 +2,282 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Treino Kauê</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Treino Pro</title>
     <style>
-        body { font-family: -apple-system, sans-serif; background: #000; color: #fff; padding: 20px; margin: 0; }
-        .treino-card { background: #1c1c1e; border-radius: 12px; margin-bottom: 20px; padding: 15px; border: 1px solid #333; }
-        h2 { color: #0a84ff; margin: 0 0 10px 0; font-size: 1.1rem; }
-        ol { font-size: 0.85rem; color: #aeaeb2; padding-left: 20px; }
-        .timer { font-size: 2.2rem; text-align: center; margin: 15px 0; font-family: monospace; font-weight: bold; }
-        .btns { display: flex; gap: 8px; }
-        button { flex: 1; height: 45px; border-radius: 8px; border: none; font-weight: bold; color: white; text-transform: uppercase; }
-        .btn-start { background: #34c759; }
-        .btn-pause { background: #ff9f0a; }
-        .btn-send { background: #0a84ff; width: 100%; margin-top: 10px; }
+        /* --- Estilos de Base (Modo Escuro) --- */
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #121212;
+            color: #e0e0e0;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 { color: #ffffff; font-weight: 300; margin-bottom: 30px; }
+
+        /* --- Acordeão de Treinos --- */
+        details {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        details[open] { border-color: #3b82f6; }
+
+        summary {
+            padding: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            color: #3b82f6;
+            text-transform: uppercase;
+        }
+
+        .conteudo-treino {
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid #333;
+        }
+
+        ol { padding-left: 20px; margin-bottom: 20px; }
+        li { margin-bottom: 8px; color: #d0d0d0; }
+
+        /* --- Cronômetro --- */
+        .mini-timer {
+            background-color: #181818;
+            border: 1px dashed #3b82f6;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            font-family: monospace;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .btn-start { background-color: #10b981; color: white; }
+        .btn-pause { background-color: #f59e0b; color: white; }
+        .btn-finish { background-color: #3b82f6; color: white; width: 100%; margin-top: 10px; }
+
+        /* --- Histórico e Compartilhamento --- */
+        .history-container {
+            margin-top: 40px;
+            text-align: left;
+            background-color: #181818;
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .history-title { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+        .history-list { list-style: none; padding: 0; }
+        
+        .history-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .history-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-wa { background-color: #25d366; color: white; flex: 1; }
+        .btn-mail { background-color: #ea4335; color: white; flex: 1; }
+        .btn-clear { background: none; color: #ef4444; border: 1px solid #ef4444; margin-top: 20px; width: 100%; font-size: 0.7rem; }
+
+        .tag-treino { color: #3b82f6; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align:center; font-size: 1.3rem;">Minha Ficha 2025</h1>
+    <div class="container">
+        <h1>Meu Treino Diário</h1>
 
-    <div class="treino-card">
-        <h2>TREINO A: PEITO/OMBRO/TRÍCEPS</h2>
-        <ol>
-            <li>Supino Vertical</li><li>Peck Deck</li><li>Supino Inclinado (H)</li><li>Supino Inclinado (M)</li>
-            <li>Desenv. Frontal + Lat.</li><li>Triceps Pully + Inv.</li><li>Triceps Banco</li>
-        </ol>
-        <div class="timer" id="displayA">00:00:00</div>
-        <div class="btns">
-            <button class="btn-start" onclick="iniciar('A')">Iniciar</button>
-            <button class="btn-pause" onclick="parar()">Pausar</button>
-        </div>
-        <button class="btn-send" onclick="finalizar('A')">Finalizar e Enviar</button>
-    </div>
+        <details name="treinos">
+            <summary>TREINO A: PEITO, OMBRO E TRÍCEPS</summary>
+            <div class="conteudo-treino">
+                <ol>
+                    <li>Supino Vertical</li><li>Peck Deck (ISO 3)</li><li>Supino Inclinado (Halteres)</li>
+                    <li>Supino Inclinado (Máquina)</li><li>Desenvolvimento Frontal + Lateral</li>
+                    <li>Triceps Pully + Inverso</li><li>Triceps Banco (Máquina)</li>
+                </ol>
+                <div class="mini-timer">
+                    <div class="timer-display" id="display-A">00:00:00</div>
+                    <div class="timer-buttons">
+                        <button class="btn-start" onclick="startTimer('A')">Iniciar</button>
+                        <button class="btn-pause" onclick="pauseTimer()">Pausar</button>
+                        <button class="btn-finish" onclick="saveWorkout('A')">Finalizar A</button>
+                    </div>
+                </div>
+            </div>
+        </details>
 
-    <div class="treino-card">
-        <h2>TREINO B: PERNA</h2>
-        <ol>
-            <li>Abdutora + Adutora</li><li>Leg 180</li><li>Agachamento Rack</li><li>Extensora</li>
-            <li>Flexora em Pé</li><li>Flexora Sentada</li>
-        </ol>
-        <div class="timer" id="displayB">00:00:00</div>
-        <div class="btns">
-            <button class="btn-start" onclick="iniciar('B')">Iniciar</button>
-            <button class="btn-pause" onclick="parar()">Pausar</button>
-        </div>
-        <button class="btn-send" onclick="finalizar('B')">Finalizar e Enviar</button>
-    </div>
+        <details name="treinos">
+            <summary>TREINO B: PERNA</summary>
+            <div class="conteudo-treino">
+                <ol>
+                    <li>Abdutora + Adutora</li><li>Leg 180</li><li>Agachamento Rack</li>
+                    <li>Cadeira Extensora (ISO 3)</li><li>Flexora em Pé</li><li>Flexora Sentada</li>
+                </ol>
+                <div class="mini-timer">
+                    <div class="timer-display" id="display-B">00:00:00</div>
+                    <div class="timer-buttons">
+                        <button class="btn-start" onclick="startTimer('B')">Iniciar</button>
+                        <button class="btn-pause" onclick="pauseTimer()">Pausar</button>
+                        <button class="btn-finish" onclick="saveWorkout('B')">Finalizar B</button>
+                    </div>
+                </div>
+            </div>
+        </details>
 
-    <div class="treino-card">
-        <h2>TREINO C: COSTAS/OMBRO/BÍCEPS</h2>
-        <ol>
-            <li>Postura</li><li>Remada Cavalinho</li><li>Remada Articulada</li><li>Pully Articulado</li>
-            <li>Puxada Baixa + Peck Deck</li><li>Rosca Martelo + Dupla</li><li>Rosca Direta W</li>
-        </ol>
-        <div class="timer" id="displayC">00:00:00</div>
-        <div class="btns">
-            <button class="btn-start" onclick="iniciar('C')">Iniciar</button>
-            <button class="btn-pause" onclick="parar()">Pausar</button>
+        <details name="treinos">
+            <summary>TREINO C: COSTAS, OMBRO E BÍCEPS</summary>
+            <div class="conteudo-treino">
+                <ol>
+                    <li>Postura</li><li>Remada Cavalinho</li><li>Remada Articulada</li>
+                    <li>Pully Articulado (UNI)</li><li>Puxada Baixa + Peck Deck Inv</li>
+                    <li>Rosca Martelo + Dupla</li><li>Rosca Direta W</li>
+                </ol>
+                <div class="mini-timer">
+                    <div class="timer-display" id="display-C">00:00:00</div>
+                    <div class="timer-buttons">
+                        <button class="btn-start" onclick="startTimer('C')">Iniciar</button>
+                        <button class="btn-pause" onclick="pauseTimer()">Pausar</button>
+                        <button class="btn-finish" onclick="saveWorkout('C')">Finalizar C</button>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div class="history-container">
+            <div class="history-title">Histórico de Atividades</div>
+            <ul class="history-list" id="historyList"></ul>
+            <button class="btn-clear" onclick="clearHistory()">Limpar Todo o Histórico</button>
         </div>
-        <button class="btn-send" onclick="finalizar('C')">Finalizar e Enviar</button>
     </div>
 
     <script>
-        var tempos = {A:0, B:0, C:0};
-        var cron = null;
-        var start = null;
-        var atual = null;
+        // --- CONFIGURAÇÕES DO USUÁRIO ---
+        const MEU_WHATSAPP = "5511995934612"; // Formato Internacional
+        const MEU_EMAIL = "kauerossi1999@gmail.com";
 
-        function iniciar(id) {
-            if(cron) clearInterval(cron);
-            atual = id;
-            start = Date.now() - tempos[id];
-            cron = setInterval(function() {
-                tempos[atual] = Date.now() - start;
-                var s = Math.floor(tempos[atual]/1000);
-                var m = Math.floor(s/60);
-                var h = Math.floor(m/60);
-                var str = [h, m%60, s%60].map(v => v.toString().padStart(2,'0')).join(':');
-                document.getElementById('display'+atual).innerHTML = str;
-            }, 500);
+        let times = { A: 0, B: 0, C: 0 };
+        let timerInterval;
+
+        function timeToString(time) {
+            let hh = Math.floor(time / 3600000);
+            let mm = Math.floor((time % 3600000) / 60000);
+            let ss = Math.floor((time % 60000) / 1000);
+            return `${hh.toString().padStart(2, "0")}:${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
         }
 
-        function parar() { clearInterval(cron); cron = null; }
-
-        function finalizar(id) {
-            var tempoFinal = document.getElementById('display'+id).innerHTML;
-            var texto = encodeURIComponent("💪 Treino " + id + " Finalizado!\n⏱️ Duração: " + tempoFinal);
-            window.location.href = "whatsapp://send?phone=5511995934612&text=" + texto;
+        function startTimer(type) {
+            clearInterval(timerInterval);
+            let startTime = Date.now() - times[type];
+            timerInterval = setInterval(() => {
+                times[type] = Date.now() - startTime;
+                document.getElementById(`display-${type}`).innerHTML = timeToString(times[type]);
+            }, 1000);
         }
+
+        function pauseTimer() { clearInterval(timerInterval); }
+
+        function saveWorkout(type) {
+            if (times[type] <= 0) return alert("Inicie o tempo primeiro!");
+            const duration = timeToString(times[type]);
+            const now = new Date();
+            const dateStr = `${now.getDate()}/${now.getMonth() + 1} às ${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}`;
+
+            let history = JSON.parse(localStorage.getItem("workoutHistory") || "[]");
+            history.unshift({ type: `Treino ${type}`, date: dateStr, duration: duration });
+            localStorage.setItem("workoutHistory", JSON.stringify(history));
+
+            times[type] = 0;
+            document.getElementById(`display-${type}`).innerHTML = "00:00:00";
+            clearInterval(timerInterval);
+            renderHistory();
+        }
+
+        // --- COMPARTILHAMENTO ---
+        function shareWhatsApp(type, date, duration) {
+            const msg = `💪 *RELATÓRIO DE TREINO*\n\n📌 *${type}*\n📅 Data: ${date}\n⏱️ Duração: ${duration}\n\nConcluído! 🔥`;
+            window.open(`https://wa.me/${MEU_WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function shareEmail(type, date, duration) {
+            const subject = `Relatório: ${type} - ${date}`;
+            const body = `Resumo do Treino:\n\nTreino: ${type}\nData: ${date}\nDuração: ${duration}\n\nEnviado via App de Treino.`;
+            window.location.href = `mailto:${MEU_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function renderHistory() {
+            const list = document.getElementById("historyList");
+            const history = JSON.parse(localStorage.getItem("workoutHistory") || "[]");
+            list.innerHTML = history.map(item => `
+                <li class="history-item">
+                    <div class="history-info">
+                        <span><span class="tag-treino">${item.type}</span> - ${item.date}</span>
+                        <span style="color: #10b981; font-weight: bold;">${item.duration}</span>
+                    </div>
+                    <div class="share-buttons">
+                        <button class="btn-wa" onclick="shareWhatsApp('${item.type}', '${item.date}', '${item.duration}')">Enviar Whats</button>
+                        <button class="btn-mail" onclick="shareEmail('${item.type}', '${item.date}', '${item.duration}')">Enviar E-mail</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        function clearHistory() {
+            if(confirm("Deseja apagar todo o histórico de treinos?")) {
+                localStorage.removeItem("workoutHistory");
+                renderHistory();
+            }
+        }
+
+        renderHistory();
     </script>
 </body>
 </html>
