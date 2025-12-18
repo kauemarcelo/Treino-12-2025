@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Treino Kauê</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #000; color: #fff; padding: 20px; margin: 0; }
+        .treino-card { background: #1c1c1e; border-radius: 12px; margin-bottom: 20px; padding: 15px; border: 1px solid #333; }
+        h2 { color: #0a84ff; margin: 0 0 10px 0; font-size: 1.1rem; }
+        ol { font-size: 0.85rem; color: #aeaeb2; padding-left: 20px; }
+        .timer { font-size: 2.2rem; text-align: center; margin: 15px 0; font-family: monospace; font-weight: bold; }
+        .btns { display: flex; gap: 8px; }
+        button { flex: 1; height: 45px; border-radius: 8px; border: none; font-weight: bold; color: white; text-transform: uppercase; }
+        .btn-start { background: #34c759; }
+        .btn-pause { background: #ff9f0a; }
+        .btn-send { background: #0a84ff; width: 100%; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align:center; font-size: 1.3rem;">Minha Ficha 2025</h1>
+
+    <div class="treino-card">
+        <h2>TREINO A: PEITO/OMBRO/TRÍCEPS</h2>
+        <ol>
+            <li>Supino Vertical</li><li>Peck Deck</li><li>Supino Inclinado (H)</li><li>Supino Inclinado (M)</li>
+            <li>Desenv. Frontal + Lat.</li><li>Triceps Pully + Inv.</li><li>Triceps Banco</li>
+        </ol>
+        <div class="timer" id="displayA">00:00:00</div>
+        <div class="btns">
+            <button class="btn-start" onclick="iniciar('A')">Iniciar</button>
+            <button class="btn-pause" onclick="parar()">Pausar</button>
+        </div>
+        <button class="btn-send" onclick="finalizar('A')">Finalizar e Enviar</button>
+    </div>
+
+    <div class="treino-card">
+        <h2>TREINO B: PERNA</h2>
+        <ol>
+            <li>Abdutora + Adutora</li><li>Leg 180</li><li>Agachamento Rack</li><li>Extensora</li>
+            <li>Flexora em Pé</li><li>Flexora Sentada</li>
+        </ol>
+        <div class="timer" id="displayB">00:00:00</div>
+        <div class="btns">
+            <button class="btn-start" onclick="iniciar('B')">Iniciar</button>
+            <button class="btn-pause" onclick="parar()">Pausar</button>
+        </div>
+        <button class="btn-send" onclick="finalizar('B')">Finalizar e Enviar</button>
+    </div>
+
+    <div class="treino-card">
+        <h2>TREINO C: COSTAS/OMBRO/BÍCEPS</h2>
+        <ol>
+            <li>Postura</li><li>Remada Cavalinho</li><li>Remada Articulada</li><li>Pully Articulado</li>
+            <li>Puxada Baixa + Peck Deck</li><li>Rosca Martelo + Dupla</li><li>Rosca Direta W</li>
+        </ol>
+        <div class="timer" id="displayC">00:00:00</div>
+        <div class="btns">
+            <button class="btn-start" onclick="iniciar('C')">Iniciar</button>
+            <button class="btn-pause" onclick="parar()">Pausar</button>
+        </div>
+        <button class="btn-send" onclick="finalizar('C')">Finalizar e Enviar</button>
+    </div>
+
+    <script>
+        var tempos = {A:0, B:0, C:0};
+        var cron = null;
+        var start = null;
+        var atual = null;
+
+        function iniciar(id) {
+            if(cron) clearInterval(cron);
+            atual = id;
+            start = Date.now() - tempos[id];
+            cron = setInterval(function() {
+                tempos[atual] = Date.now() - start;
+                var s = Math.floor(tempos[atual]/1000);
+                var m = Math.floor(s/60);
+                var h = Math.floor(m/60);
+                var str = [h, m%60, s%60].map(v => v.toString().padStart(2,'0')).join(':');
+                document.getElementById('display'+atual).innerHTML = str;
+            }, 500);
+        }
+
+        function parar() { clearInterval(cron); cron = null; }
+
+        function finalizar(id) {
+            var tempoFinal = document.getElementById('display'+id).innerHTML;
+            var texto = encodeURIComponent("💪 Treino " + id + " Finalizado!\n⏱️ Duração: " + tempoFinal);
+            window.location.href = "whatsapp://send?phone=5511995934612&text=" + texto;
+        }
+    </script>
+</body>
+</html>
