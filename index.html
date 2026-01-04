@@ -36,6 +36,7 @@ h1 { text-align: center; }
 
 .tempo {
   margin-top: 5px;
+  font-weight: bold;
 }
 
 .exercicio {
@@ -53,6 +54,7 @@ h1 { text-align: center; }
   background: rgba(0,0,0,.6);
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .modal-content {
@@ -67,6 +69,7 @@ h1 { text-align: center; }
 
 .modal-content h3 {
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .modal-content input {
@@ -90,52 +93,66 @@ h1 { text-align: center; }
 
 <h1>📋 Meu Treino</h1>
 
+<!-- TREINO A -->
 <div class="treino" data-treino="A">
-<h2>Treino A</h2>
+<h2>Treino A – Peito / Ombro / Tríceps</h2>
 <div class="controles">
   <button onclick="iniciar('A')">▶️ Iniciar</button>
   <button onclick="pausar('A')">⏸ Pausar</button>
   <button onclick="abrirFormulario('A')">📤 Enviar</button>
-  <div id="tempo_A">⏱ 00:00</div>
+  <div class="tempo" id="tempo_A">⏱ 00:00</div>
 </div>
 
 <div class="exercicio">Supino Reto</div>
 <div class="exercicio">Supino Inclinado</div>
 <div class="exercicio">Crucifixo</div>
+<div class="exercicio">Desenvolvimento</div>
+<div class="exercicio">Elevação Lateral</div>
+<div class="exercicio">Tríceps Pulley</div>
+<div class="exercicio">Tríceps Testa</div>
 </div>
 
+<!-- TREINO B -->
 <div class="treino" data-treino="B">
-<h2>Treino B</h2>
+<h2>Treino B – Pernas</h2>
 <div class="controles">
   <button onclick="iniciar('B')">▶️ Iniciar</button>
   <button onclick="pausar('B')">⏸ Pausar</button>
   <button onclick="abrirFormulario('B')">📤 Enviar</button>
-  <div id="tempo_B">⏱ 00:00</div>
+  <div class="tempo" id="tempo_B">⏱ 00:00</div>
 </div>
 
 <div class="exercicio">Agachamento</div>
 <div class="exercicio">Leg Press</div>
-<div class="exercicio">Extensora</div>
+<div class="exercicio">Cadeira Extensora</div>
+<div class="exercicio">Mesa Flexora</div>
+<div class="exercicio">Panturrilha em Pé</div>
+<div class="exercicio">Panturrilha Sentado</div>
 </div>
 
+<!-- TREINO C -->
 <div class="treino" data-treino="C">
-<h2>Treino C</h2>
+<h2>Treino C – Costas / Bíceps</h2>
 <div class="controles">
   <button onclick="iniciar('C')">▶️ Iniciar</button>
   <button onclick="pausar('C')">⏸ Pausar</button>
   <button onclick="abrirFormulario('C')">📤 Enviar</button>
-  <div id="tempo_C">⏱ 00:00</div>
+  <div class="tempo" id="tempo_C">⏱ 00:00</div>
 </div>
 
-<div class="exercicio">Puxada</div>
-<div class="exercicio">Remada</div>
+<div class="exercicio">Puxada na Frente</div>
+<div class="exercicio">Remada Curvada</div>
+<div class="exercicio">Remada Baixa</div>
+<div class="exercicio">Pulldown</div>
 <div class="exercicio">Rosca Direta</div>
+<div class="exercicio">Rosca Alternada</div>
+<div class="exercicio">Rosca Martelo</div>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
 <div class="modal-content">
-  <h3>Preencher treino</h3>
+  <h3>Preencher relatório do treino</h3>
   <div id="campos"></div>
   <button onclick="confirmarEnvio()">Enviar Relatório</button>
 </div>
@@ -167,11 +184,11 @@ function atualizar(id){
 
 function abrirFormulario(id){
   treinoAtual = id;
-  const div = document.querySelector(`[data-treino="${id}"]`);
+  const treino = document.querySelector(`[data-treino="${id}"]`);
   const campos = document.getElementById('campos');
   campos.innerHTML = '';
 
-  div.querySelectorAll('.exercicio').forEach(ex=>{
+  treino.querySelectorAll('.exercicio').forEach(ex=>{
     campos.innerHTML += `
       <strong>${ex.innerText}</strong>
       <input placeholder="Peso (kg)">
@@ -191,8 +208,13 @@ function confirmarEnvio(){
     texto += `Peso: ${inputs[i].value}kg | Reps: ${inputs[i+1].value} | Cal: ${inputs[i+2].value}\n`;
   }
 
-  window.open(`https://wa.me/5511995934612?text=${encodeURIComponent(texto)}`);
-  window.location.href = `mailto:kauerossi1999@gmail.com?subject=Treino ${treinoAtual}&body=${encodeURIComponent(texto)}`;
+  window.open(
+    `https://wa.me/5511995934612?text=${encodeURIComponent(texto)}`,
+    '_blank'
+  );
+
+  window.location.href =
+    `mailto:kauerossi1999@gmail.com?subject=Treino ${treinoAtual}&body=${encodeURIComponent(texto)}`;
 
   document.getElementById('modal').style.display = 'none';
 }
