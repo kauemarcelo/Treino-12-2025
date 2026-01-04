@@ -7,167 +7,86 @@
 
 <style>
 :root {
-  --bg: #0f172a;
-  --card: #111827;
-  --border: #1f2933;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --primary: #3b82f6;
-  --whats: #22c55e;
-  --email: #f59e0b;
-  --danger: #64748b;
+  --bg:#0f172a; --card:#111827; --border:#1f2933;
+  --text:#e5e7eb; --muted:#9ca3af;
+  --primary:#3b82f6; --success:#16a34a;
+  --whats:#22c55e; --email:#f59e0b; --danger:#64748b;
 }
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 16px;
+body{
+  margin:0;font-family:Arial;background:var(--bg);
+  color:var(--text);padding:16px;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+h1{text-align:center;margin-bottom:20px}
+
+.treino{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;margin-bottom:14px;
 }
 
-/* TREINO */
-.treino {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  margin-bottom: 14px;
-  overflow: hidden;
+.treino-header{
+  padding:14px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
 }
 
-.treino-header {
-  padding: 14px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.treino-body{display:none;padding:14px;border-top:1px solid var(--border)}
+
+.controles{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
 }
 
-.treino-header h2 {
-  font-size: 16px;
-  margin: 0;
+.controles button{
+  flex:1;min-width:110px;
+  padding:12px;border:none;border-radius:12px;
+  font-size:14px;color:#fff;cursor:pointer;
 }
 
-.treino-header span {
-  font-size: 22px;
-  color: var(--muted);
+.btn-iniciar{background:var(--primary)}
+.btn-finalizar{background:var(--success)}
+.btn-enviar{background:#475569}
+
+.tempo{
+  width:100%;text-align:center;margin-top:10px;color:var(--muted)
 }
 
-.treino-body {
-  display: none;
-  padding: 14px;
-  border-top: 1px solid var(--border);
-}
-
-/* CONTROLES */
-.controles {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.controles button {
-  flex: 1;
-  min-width: 120px;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  background: var(--primary);
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.tempo {
-  width: 100%;
-  text-align: center;
-  margin-top: 10px;
-  font-weight: bold;
-  color: var(--muted);
-}
-
-/* EXERCÍCIOS */
-.exercicio {
-  border: 1px solid var(--border);
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 10px;
-  font-size: 14px;
+.exercicio{
+  border:1px solid var(--border);
+  padding:10px;border-radius:10px;margin-top:10px;
 }
 
 /* MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.85);
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
+.modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;align-items:center;z-index:50;
 }
 
-.modal-content {
-  background: var(--card);
-  width: 100%;
-  max-width: 500px;
-  height: 100%;
-  max-height: 90vh;
-  padding: 16px;
-  border-radius: 16px;
-  overflow-y: auto;
-  border: 1px solid var(--border);
+.modal-content{
+  background:var(--card);
+  width:100%;max-width:500px;max-height:90vh;
+  padding:16px;border-radius:16px;overflow:auto;
 }
 
-.modal-content h3 {
-  text-align: center;
-  margin-bottom: 12px;
+.modal-content input{
+  width:100%;padding:10px;margin:6px 0 12px;
+  border-radius:10px;border:1px solid var(--border);
+  background:#020617;color:var(--text);
 }
 
-.modal-content strong {
-  display: block;
-  margin-top: 12px;
+.modal-actions{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;
 }
 
-.modal-content input {
-  width: 100%;
-  padding: 10px;
-  margin: 6px 0 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: #020617;
-  color: var(--text);
-  font-size: 15px;
+.modal-actions button{
+  flex:1;padding:12px;border:none;border-radius:12px;
+  font-size:15px;color:#fff;cursor:pointer;
 }
 
-/* BOTÕES MODAL */
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
-  flex-wrap: wrap;
-}
-
-.modal-actions button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #fff;
-}
-
-.btn-whats { background: var(--whats); }
-.btn-email { background: var(--email); }
-.btn-back { background: var(--danger); }
+.btn-back{background:var(--danger)}
 </style>
 </head>
 
@@ -175,16 +94,16 @@ h1 {
 
 <h1>🏋️ Meu Treino</h1>
 
-<!-- TREINO A -->
+<!-- TREINOS -->
 <div class="treino">
   <div class="treino-header" onclick="toggleTreino('A')">
-    <h2>Treino A – Peito / Ombro / Tríceps</h2>
-    <span id="icon_A">+</span>
+    <h2>Treino A – Peito / Ombro / Tríceps</h2><span id="icon_A">+</span>
   </div>
   <div class="treino-body" id="body_A">
     <div class="controles">
-      <button onclick="iniciar('A')">▶️ Iniciar</button>
-      <button onclick="abrirFormulario('A')">📤 Enviar</button>
+      <button class="btn-iniciar" onclick="iniciar('A')">▶️ Iniciar</button>
+      <button class="btn-finalizar" onclick="finalizar('A')">✅ Finalizar</button>
+      <button class="btn-enviar" onclick="abrirFormulario('A', false)">📤 Enviar</button>
       <div class="tempo" id="tempo_A">⏱ 00:00</div>
     </div>
 
@@ -194,139 +113,108 @@ h1 {
     <div class="exercicio">Desenvolvimento</div>
     <div class="exercicio">Elevação Lateral</div>
     <div class="exercicio">Tríceps Pulley</div>
-    <div class="exercicio">Tríceps Testa</div>
-  </div>
-</div>
-
-<!-- TREINO B -->
-<div class="treino">
-  <div class="treino-header" onclick="toggleTreino('B')">
-    <h2>Treino B – Pernas</h2>
-    <span id="icon_B">+</span>
-  </div>
-  <div class="treino-body" id="body_B">
-    <div class="controles">
-      <button onclick="iniciar('B')">▶️ Iniciar</button>
-      <button onclick="abrirFormulario('B')">📤 Enviar</button>
-      <div class="tempo" id="tempo_B">⏱ 00:00</div>
-    </div>
-
-    <div class="exercicio">Agachamento</div>
-    <div class="exercicio">Leg Press</div>
-    <div class="exercicio">Cadeira Extensora</div>
-    <div class="exercicio">Mesa Flexora</div>
-    <div class="exercicio">Panturrilha em Pé</div>
-    <div class="exercicio">Panturrilha Sentado</div>
-  </div>
-</div>
-
-<!-- TREINO C -->
-<div class="treino">
-  <div class="treino-header" onclick="toggleTreino('C')">
-    <h2>Treino C – Costas / Bíceps</h2>
-    <span id="icon_C">+</span>
-  </div>
-  <div class="treino-body" id="body_C">
-    <div class="controles">
-      <button onclick="iniciar('C')">▶️ Iniciar</button>
-      <button onclick="abrirFormulario('C')">📤 Enviar</button>
-      <div class="tempo" id="tempo_C">⏱ 00:00</div>
-    </div>
-
-    <div class="exercicio">Puxada na Frente</div>
-    <div class="exercicio">Remada Curvada</div>
-    <div class="exercicio">Remada Baixa</div>
-    <div class="exercicio">Pulldown</div>
-    <div class="exercicio">Rosca Direta</div>
-    <div class="exercicio">Rosca Alternada</div>
-    <div class="exercicio">Rosca Martelo</div>
   </div>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
-    <h3>📊 Relatório do Treino</h3>
+    <h3>📊 Registro do Treino</h3>
     <div id="campos"></div>
 
     <div class="modal-actions">
       <button class="btn-back" onclick="fecharModal()">⬅ Voltar</button>
-      <button class="btn-whats" onclick="enviarWhats()">WhatsApp</button>
-      <button class="btn-email" onclick="enviarEmail()">E-mail</button>
+      <button style="background:#22c55e" onclick="enviarWhats()">WhatsApp</button>
+      <button style="background:#f59e0b" onclick="enviarEmail()">E-mail</button>
     </div>
   </div>
 </div>
 
 <script>
-const timers = {};
-let treinoAtual = '';
+const timers={}, historicoKey='historicoTreinos';
+let treinoAtual='', salvarAoAbrir=false;
 
-function toggleTreino(id) {
-  const body = document.getElementById('body_' + id);
-  const icon = document.getElementById('icon_' + id);
-  const aberto = body.style.display === 'block';
-
-  ['A','B','C'].forEach(t => {
-    document.getElementById('body_'+t).style.display = 'none';
-    document.getElementById('icon_'+t).innerText = '+';
+function toggleTreino(id){
+  ['A','B','C'].forEach(t=>{
+    const b=document.getElementById('body_'+t);
+    const i=document.getElementById('icon_'+t);
+    if(b){b.style.display='none';i.innerText='+'}
   });
-
-  if (!aberto) {
-    body.style.display = 'block';
-    icon.innerText = '−';
-  }
+  const body=document.getElementById('body_'+id);
+  body.style.display='block';
+  document.getElementById('icon_'+id).innerText='−';
 }
 
-function iniciar(id) {
-  if (!timers[id]) timers[id] = { start: Date.now(), acc: 0 };
-  timers[id].start = Date.now();
-  setInterval(() => atualizar(id), 1000);
+function iniciar(id){
+  timers[id]={start:Date.now()};
 }
 
-function atualizar(id) {
-  const t = timers[id];
-  const ms = (Date.now() - t.start) + t.acc;
-  const m = String(Math.floor(ms / 60000)).padStart(2,'0');
-  const s = String(Math.floor((ms % 60000) / 1000)).padStart(2,'0');
-  document.getElementById('tempo_'+id).innerText = `⏱ ${m}:${s}`;
+function finalizar(id){
+  abrirFormulario(id,true);
 }
 
-function abrirFormulario(id) {
-  treinoAtual = id;
-  const campos = document.getElementById('campos');
-  campos.innerHTML = '';
-
-  document.querySelectorAll('#body_'+id+' .exercicio').forEach(ex => {
-    campos.innerHTML += `
+function abrirFormulario(id,salvar){
+  treinoAtual=id;
+  salvarAoAbrir=salvar;
+  const campos=document.getElementById('campos');
+  campos.innerHTML='';
+  document.querySelectorAll('#body_'+id+' .exercicio').forEach(ex=>{
+    campos.innerHTML+=`
       <strong>${ex.innerText}</strong>
       <input placeholder="Peso (kg)">
       <input placeholder="Repetições">
     `;
   });
-
-  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('modal').style.display='flex';
 }
 
-function fecharModal() {
-  document.getElementById('modal').style.display = 'none';
+function fecharModal(){
+  document.getElementById('modal').style.display='none';
 }
 
-function gerarTexto() {
-  let texto = `Treino ${treinoAtual}\n${document.getElementById('tempo_'+treinoAtual).innerText}\n\n`;
-  const inputs = document.querySelectorAll('#campos input');
-  document.querySelectorAll('#campos strong').forEach((el, i) => {
-    texto += `${el.innerText}: ${inputs[i*2].value}kg / ${inputs[i*2+1].value} reps\n`;
+function gerarRegistro(){
+  const tempo=document.getElementById('tempo_'+treinoAtual).innerText;
+  const exercicios=[];
+  const inputs=document.querySelectorAll('#campos input');
+  document.querySelectorAll('#campos strong').forEach((el,i)=>{
+    exercicios.push({
+      nome:el.innerText,
+      peso:inputs[i*2].value,
+      reps:inputs[i*2+1].value
+    });
   });
-  return texto;
+
+  return {
+    treino:treinoAtual,
+    data:new Date().toLocaleString(),
+    tempo,
+    exercicios
+  };
 }
 
-function enviarWhats() {
-  window.open(`https://wa.me/5511995934612?text=${encodeURIComponent(gerarTexto())}`, '_blank');
+function salvarRegistro(){
+  const hist=JSON.parse(localStorage.getItem(historicoKey)||'[]');
+  hist.push(gerarRegistro());
+  localStorage.setItem(historicoKey,JSON.stringify(hist));
 }
 
-function enviarEmail() {
-  window.location.href =
-    `mailto:kauerossi1999@gmail.com?subject=Treino ${treinoAtual}&body=${encodeURIComponent(gerarTexto())}`;
+function textoExport(){
+  const r=gerarRegistro();
+  let t=`Treino ${r.treino}\n${r.data}\n${r.tempo}\n\n`;
+  r.exercicios.forEach(e=>{
+    t+=`${e.nome}: ${e.peso}kg / ${e.reps} reps\n`;
+  });
+  return t;
+}
+
+function enviarWhats(){
+  if(salvarAoAbrir) salvarRegistro();
+  window.open(`https://wa.me/5511995934612?text=${encodeURIComponent(textoExport())}`);
+}
+
+function enviarEmail(){
+  if(salvarAoAbrir) salvarRegistro();
+  location.href=`mailto:kauerossi1999@gmail.com?subject=Treino ${treinoAtual}&body=${encodeURIComponent(textoExport())}`;
 }
 </script>
 
