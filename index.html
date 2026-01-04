@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Treino</title>
 
 <style>
@@ -12,15 +13,21 @@
   --text: #e5e7eb;
   --muted: #9ca3af;
   --primary: #3b82f6;
-  --whats: #25d366;
+  --whats: #22c55e;
   --email: #f59e0b;
+  --danger: #64748b;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  padding: 20px;
+  padding: 16px;
 }
 
 h1 {
@@ -28,16 +35,17 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* TREINOS */
 .treino {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
   overflow: hidden;
 }
 
 .treino-header {
-  padding: 15px;
+  padding: 14px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -45,46 +53,53 @@ h1 {
 }
 
 .treino-header h2 {
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
 }
 
 .treino-header span {
-  font-size: 20px;
+  font-size: 22px;
   color: var(--muted);
 }
 
 .treino-body {
   display: none;
-  padding: 15px;
+  padding: 14px;
   border-top: 1px solid var(--border);
 }
 
+/* CONTROLES */
 .controles {
   text-align: center;
 }
 
 .controles button {
-  padding: 8px 14px;
-  margin: 5px;
+  width: 100%;
+  max-width: 220px;
+  padding: 10px;
+  margin: 6px auto;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--primary);
   color: #fff;
+  font-size: 15px;
   cursor: pointer;
+  display: block;
 }
 
 .tempo {
-  margin-top: 6px;
+  margin-top: 8px;
   font-weight: bold;
   color: var(--muted);
 }
 
+/* EXERCÍCIOS */
 .exercicio {
   border: 1px solid var(--border);
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-top: 10px;
+  font-size: 14px;
 }
 
 /* MODAL */
@@ -92,19 +107,20 @@ h1 {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.8);
+  background: rgba(0,0,0,.85);
   justify-content: center;
   align-items: center;
-  z-index: 20;
+  z-index: 50;
 }
 
 .modal-content {
   background: var(--card);
-  width: 95%;
+  width: 100%;
   max-width: 500px;
-  padding: 20px;
-  border-radius: 14px;
-  max-height: 80vh;
+  height: 100%;
+  max-height: 90vh;
+  padding: 16px;
+  border-radius: 16px;
   overflow-y: auto;
   border: 1px solid var(--border);
 }
@@ -116,35 +132,53 @@ h1 {
 
 .modal-content strong {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .modal-content input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin: 6px 0 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: #020617;
   color: var(--text);
+  font-size: 15px;
 }
 
+/* BOTÕES MODAL */
 .modal-actions {
   display: flex;
+  flex-direction: column;
   gap: 10px;
+  margin-top: 16px;
 }
 
 .modal-actions button {
-  flex: 1;
   padding: 12px;
   border: none;
-  border-radius: 10px;
-  color: #fff;
+  border-radius: 12px;
+  font-size: 16px;
   cursor: pointer;
+  color: #fff;
 }
 
 .btn-whats { background: var(--whats); }
 .btn-email { background: var(--email); }
+.btn-back { background: var(--danger); }
+
+/* DESKTOP */
+@media (min-width: 600px) {
+  .controles button {
+    display: inline-block;
+    width: auto;
+    margin: 5px;
+  }
+
+  .modal-actions {
+    flex-direction: row;
+  }
+}
 </style>
 </head>
 
@@ -153,12 +187,11 @@ h1 {
 <h1>🏋️ Meu Treino</h1>
 
 <!-- TREINO A -->
-<div class="treino" data-treino="A">
+<div class="treino">
   <div class="treino-header" onclick="toggleTreino('A')">
     <h2>Treino A – Peito / Ombro / Tríceps</h2>
     <span id="icon_A">+</span>
   </div>
-
   <div class="treino-body" id="body_A">
     <div class="controles">
       <button onclick="iniciar('A')">▶️ Iniciar</button>
@@ -178,12 +211,11 @@ h1 {
 </div>
 
 <!-- TREINO B -->
-<div class="treino" data-treino="B">
+<div class="treino">
   <div class="treino-header" onclick="toggleTreino('B')">
     <h2>Treino B – Pernas</h2>
     <span id="icon_B">+</span>
   </div>
-
   <div class="treino-body" id="body_B">
     <div class="controles">
       <button onclick="iniciar('B')">▶️ Iniciar</button>
@@ -202,12 +234,11 @@ h1 {
 </div>
 
 <!-- TREINO C -->
-<div class="treino" data-treino="C">
+<div class="treino">
   <div class="treino-header" onclick="toggleTreino('C')">
     <h2>Treino C – Costas / Bíceps</h2>
     <span id="icon_C">+</span>
   </div>
-
   <div class="treino-body" id="body_C">
     <div class="controles">
       <button onclick="iniciar('C')">▶️ Iniciar</button>
@@ -229,9 +260,11 @@ h1 {
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
-    <h3>📊 Relatório do treino</h3>
+    <h3>📊 Relatório do Treino</h3>
     <div id="campos"></div>
+
     <div class="modal-actions">
+      <button class="btn-back" onclick="fecharModal()">⬅ Voltar</button>
       <button class="btn-whats" onclick="enviarWhats()">WhatsApp</button>
       <button class="btn-email" onclick="enviarEmail()">E-mail</button>
     </div>
@@ -242,77 +275,4 @@ h1 {
 const timers = {};
 let treinoAtual = '';
 
-function toggleTreino(id) {
-  ['A','B','C'].forEach(t => {
-    document.getElementById('body_'+t).style.display = 'none';
-    document.getElementById('icon_'+t).innerText = '+';
-  });
-
-  const body = document.getElementById('body_'+id);
-  const icon = document.getElementById('icon_'+id);
-
-  body.style.display = 'block';
-  icon.innerText = '−';
-}
-
-function iniciar(id){
-  if(!timers[id]) timers[id] = {start:Date.now(), acc:0};
-  timers[id].interval = setInterval(()=>atualizar(id),1000);
-}
-
-function pausar(id){
-  const t = timers[id];
-  if(!t) return;
-  t.acc += Date.now() - t.start;
-  clearInterval(t.interval);
-}
-
-function atualizar(id){
-  const t = timers[id];
-  const ms = t.acc + (Date.now()-t.start);
-  const m = String(Math.floor(ms/60000)).padStart(2,'0');
-  const s = String(Math.floor((ms%60000)/1000)).padStart(2,'0');
-  document.getElementById('tempo_'+id).innerText = `⏱ ${m}:${s}`;
-}
-
-function abrirFormulario(id){
-  treinoAtual = id;
-  const treino = document.querySelector(`[data-treino="${id}"]`);
-  const campos = document.getElementById('campos');
-  campos.innerHTML = '';
-
-  treino.querySelectorAll('.exercicio').forEach(ex=>{
-    campos.innerHTML += `
-      <strong>${ex.innerText}</strong>
-      <input placeholder="Peso (kg)">
-      <input placeholder="Repetições">
-    `;
-  });
-
-  document.getElementById('modal').style.display = 'flex';
-}
-
-function gerarTexto(){
-  let texto = `Treino ${treinoAtual}\n${document.getElementById('tempo_'+treinoAtual).innerText}\n\n`;
-  const inputs = document.querySelectorAll('#campos input');
-
-  for(let i=0;i<inputs.length;i+=2){
-    texto += `Peso: ${inputs[i].value}kg | Reps: ${inputs[i+1].value}\n`;
-  }
-  return texto;
-}
-
-function enviarWhats(){
-  const texto = gerarTexto();
-  window.open(`https://wa.me/5511995934612?text=${encodeURIComponent(texto)}`, '_blank');
-}
-
-function enviarEmail(){
-  const texto = gerarTexto();
-  window.location.href =
-    `mailto:kauerossi1999@gmail.com?subject=Treino ${treinoAtual}&body=${encodeURIComponent(texto)}`;
-}
-</script>
-
-</body>
-</html>
+function toggleTre
