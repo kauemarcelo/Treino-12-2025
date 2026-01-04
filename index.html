@@ -275,4 +275,78 @@ h1 {
 const timers = {};
 let treinoAtual = '';
 
-function toggleTre
+function toggleTreino(id) {
+  ['A','B','C'].forEach(t => {
+    document.getElementById('body_'+t).style.display = 'none';
+    document.getElementById('icon_'+t).innerText = '+';
+  });
+
+  document.getElementById('body_'+id).style.display = 'block';
+  document.getElementById('icon_'+id).innerText = '−';
+}
+
+function iniciar(id) {
+  if (!timers[id]) timers[id] = { start: Date.now(), acc: 0 };
+  timers[id].interval = setInterval(() => atualizar(id), 1000);
+}
+
+function pausar(id) {
+  const t = timers[id];
+  if (!t) return;
+  t.acc += Date.now() - t.start;
+  clearInterval(t.interval);
+}
+
+function atualizar(id) {
+  const t = timers[id];
+  const ms = t.acc + (Date.now() - t.start);
+  const m = String(Math.floor(ms / 60000)).padStart(2, '0');
+  const s = String(Math.floor((ms % 60000) / 1000)).padStart(2, '0');
+  document.getElementById('tempo_' + id).innerText = `⏱ ${m}:${s}`;
+}
+
+function abrirFormulario(id) {
+  treinoAtual = id;
+  const treino = document.getElementById('body_' + id);
+  const campos = document.getElementById('campos');
+  campos.innerHTML = '';
+
+  treino.querySelectorAll('.exercicio').forEach(ex => {
+    campos.innerHTML += `
+      <strong>${ex.innerText}</strong>
+      <input placeholder="Peso (kg)">
+      <input placeholder="Repetições">
+    `;
+  });
+
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function fecharModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+function gerarTexto() {
+  let texto = `Treino ${treinoAtual}\n${document.getElementById('tempo_'+treinoAtual).innerText}\n\n`;
+  const inputs = document.querySelectorAll('#campos input');
+
+  for (let i = 0; i < inputs.length; i += 2) {
+    texto += `Peso: ${inputs[i].value}kg | Reps: ${inputs[i+1].value}\n`;
+  }
+  return texto;
+}
+
+function enviarWhats() {
+  const texto = gerarTexto();
+  window.open(`https://wa.me/5511995934612?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+function enviarEmail() {
+  const texto = gerarTexto();
+  window.location.href =
+    `mailto:kauerossi1999@gmail.com?subject=Treino ${treinoAtual}&body=${encodeURIComponent(texto)}`;
+}
+</script>
+
+</body>
+</html>
