@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,14 +15,21 @@ h1 {
   text-align: center;
 }
 
+.treino {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
 .controles {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .controles button {
-  padding: 10px 15px;
-  margin: 5px;
+  padding: 8px 12px;
+  margin: 3px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -37,16 +41,9 @@ h1 {
   background: #1b4f72;
 }
 
-#tempo {
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-.treino {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 25px;
+.tempo {
+  font-size: 16px;
+  margin-top: 8px;
 }
 
 .exercicio {
@@ -57,7 +54,7 @@ h1 {
 }
 
 .exercicio h4 {
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
 }
 
 .exercicio input {
@@ -72,188 +69,130 @@ h1 {
 
 <h1>📋 Meu Treino</h1>
 
-<div class="controles">
-  <button onclick="iniciarTreino()">▶️ Iniciar</button>
-  <button onclick="pausarTreino()">⏸ Pausar</button>
-  <button onclick="finalizarTreino()">⏹ Finalizar</button>
-  <div id="tempo">⏱ Tempo: 00:00</div>
-</div>
-
 <!-- TREINO A -->
-<div class="treino">
+<div class="treino" data-treino="A">
 <h2>Treino A – Peito / Ombro / Tríceps</h2>
 
-<div class="exercicio">
-<h4>Supino Reto</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
+<div class="controles">
+  <button onclick="iniciar('A')">▶️ Iniciar</button>
+  <button onclick="pausar('A')">⏸ Pausar</button>
+  <button onclick="finalizar('A')">⏹ Finalizar</button>
+  <div class="tempo" id="tempo_A">⏱ Tempo: 00:00</div>
 </div>
 
-<div class="exercicio">
-<h4>Supino Inclinado</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Crucifixo</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Desenvolvimento</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Tríceps Pulley</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
+<div class="exercicio"><h4>Supino Reto</h4><input class="peso" placeholder="Peso (kg)"><input class="reps" placeholder="Reps"><input class="calorias" placeholder="Calorias"></div>
+<div class="exercicio"><h4>Supino Inclinado</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Crucifixo</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Desenvolvimento</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Tríceps Pulley</h4><input class="peso"><input class="reps"><input class="calorias"></div>
 </div>
 
 <!-- TREINO B -->
-<div class="treino">
+<div class="treino" data-treino="B">
 <h2>Treino B – Pernas</h2>
 
-<div class="exercicio">
-<h4>Agachamento</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
+<div class="controles">
+  <button onclick="iniciar('B')">▶️ Iniciar</button>
+  <button onclick="pausar('B')">⏸ Pausar</button>
+  <button onclick="finalizar('B')">⏹ Finalizar</button>
+  <div class="tempo" id="tempo_B">⏱ Tempo: 00:00</div>
 </div>
 
-<div class="exercicio">
-<h4>Leg Press</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Cadeira Extensora</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Mesa Flexora</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Panturrilha</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
+<div class="exercicio"><h4>Agachamento</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Leg Press</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Cadeira Extensora</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Mesa Flexora</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Panturrilha</h4><input class="peso"><input class="reps"><input class="calorias"></div>
 </div>
 
 <!-- TREINO C -->
-<div class="treino">
+<div class="treino" data-treino="C">
 <h2>Treino C – Costas / Bíceps</h2>
 
-<div class="exercicio">
-<h4>Puxada na Frente</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
+<div class="controles">
+  <button onclick="iniciar('C')">▶️ Iniciar</button>
+  <button onclick="pausar('C')">⏸ Pausar</button>
+  <button onclick="finalizar('C')">⏹ Finalizar</button>
+  <div class="tempo" id="tempo_C">⏱ Tempo: 00:00</div>
 </div>
 
-<div class="exercicio">
-<h4>Remada Curvada</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Rosca Direta</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
-
-<div class="exercicio">
-<h4>Rosca Alternada</h4>
-<input type="number" placeholder="Peso (kg)" class="peso">
-<input type="number" placeholder="Repetições" class="reps">
-<input type="number" placeholder="Calorias" class="calorias">
-</div>
+<div class="exercicio"><h4>Puxada na Frente</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Remada Curvada</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Rosca Direta</h4><input class="peso"><input class="reps"><input class="calorias"></div>
+<div class="exercicio"><h4>Rosca Alternada</h4><input class="peso"><input class="reps"><input class="calorias"></div>
 </div>
 
 <script>
-let inicio = null;
-let intervalo = null;
-let pausado = false;
-let tempoPausado = 0;
+const timers = {};
 
-function iniciarTreino() {
-  if (!inicio) {
-    inicio = Date.now();
-  } else if (pausado) {
-    inicio = Date.now() - tempoPausado;
-    pausado = false;
+function iniciar(id) {
+  if (!timers[id]) {
+    timers[id] = { inicio: Date.now(), pausado: false, acumulado: 0 };
+  } else if (timers[id].pausado) {
+    timers[id].inicio = Date.now();
+    timers[id].pausado = false;
   }
-  intervalo = setInterval(atualizarTempo, 1000);
+
+  timers[id].intervalo = setInterval(() => atualizar(id), 1000);
 }
 
-function pausarTreino() {
-  if (!inicio) return;
-  pausado = true;
-  tempoPausado = Date.now() - inicio;
-  clearInterval(intervalo);
+function pausar(id) {
+  const t = timers[id];
+  if (!t || t.pausado) return;
+
+  t.pausado = true;
+  t.acumulado += Date.now() - t.inicio;
+  clearInterval(t.intervalo);
 }
 
-function atualizarTempo() {
-  const diff = Date.now() - inicio;
-  const min = String(Math.floor(diff / 60000)).padStart(2, '0');
-  const sec = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-  document.getElementById('tempo').innerText = `⏱ Tempo: ${min}:${sec}`;
+function atualizar(id) {
+  const t = timers[id];
+  const total = t.acumulado + (Date.now() - t.inicio);
+
+  const min = String(Math.floor(total / 60000)).padStart(2, '0');
+  const sec = String(Math.floor((total % 60000) / 1000)).padStart(2, '0');
+
+  document.getElementById(`tempo_${id}`).innerText = `⏱ Tempo: ${min}:${sec}`;
 }
 
-function finalizarTreino() {
-  clearInterval(intervalo);
+function finalizar(id) {
+  const t = timers[id];
+  if (!t) return;
 
-  let totalCalorias = 0;
+  clearInterval(t.intervalo);
+
+  const treino = document.querySelector(`[data-treino="${id}"]`);
+  let caloriasTotais = 0;
   const exercicios = [];
 
-  document.querySelectorAll('.exercicio').forEach(ex => {
+  treino.querySelectorAll('.exercicio').forEach(ex => {
     const peso = Number(ex.querySelector('.peso').value || 0);
     const reps = Number(ex.querySelector('.reps').value || 0);
     const calorias = Number(ex.querySelector('.calorias').value || 0);
-
-    totalCalorias += calorias;
+    caloriasTotais += calorias;
 
     exercicios.push({
       nome: ex.querySelector('h4').innerText,
-      peso,
-      reps,
-      calorias
+      peso, reps, calorias
     });
   });
 
-  const treino = {
+  const totalMs = t.acumulado + (Date.now() - t.inicio);
+  const min = Math.floor(totalMs / 60000);
+  const sec = Math.floor((totalMs % 60000) / 1000);
+
+  const dados = {
+    treino: id,
     data: new Date().toLocaleString(),
-    tempo: document.getElementById('tempo').innerText,
-    caloriasTotais: totalCalorias,
+    tempo: `${min}:${String(sec).padStart(2,'0')}`,
+    caloriasTotais,
     exercicios
   };
 
-  localStorage.setItem(`treino_${Date.now()}`, JSON.stringify(treino));
-  alert('✅ Treino finalizado e salvo com sucesso!');
-  }
+  localStorage.setItem(`treino_${id}_${Date.now()}`, JSON.stringify(dados));
+  alert(`✅ Treino ${id} salvo com sucesso!`);
+}
 </script>
 
 </body>
-</html>
+</html> 
