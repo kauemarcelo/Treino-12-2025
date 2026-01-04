@@ -27,7 +27,7 @@ h1 { text-align: center; }
 
 .controles button {
   padding: 8px 12px;
-  margin: 3px;
+  margin: 4px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -74,7 +74,7 @@ h1 { text-align: center; }
 <div class="controles">
   <button onclick="iniciar('A')">▶️ Iniciar</button>
   <button onclick="pausar('A')">⏸ Pausar</button>
-  <button onclick="mostrarInputs('A')">📤 Enviar</button>
+  <button onclick="enviar('A')">📤 Enviar</button>
   <div class="tempo" id="tempo_A">⏱ 00:00</div>
 </div>
 
@@ -92,7 +92,7 @@ h1 { text-align: center; }
 <div class="controles">
   <button onclick="iniciar('B')">▶️ Iniciar</button>
   <button onclick="pausar('B')">⏸ Pausar</button>
-  <button onclick="mostrarInputs('B')">📤 Enviar</button>
+  <button onclick="enviar('B')">📤 Enviar</button>
   <div class="tempo" id="tempo_B">⏱ 00:00</div>
 </div>
 
@@ -110,7 +110,7 @@ h1 { text-align: center; }
 <div class="controles">
   <button onclick="iniciar('C')">▶️ Iniciar</button>
   <button onclick="pausar('C')">⏸ Pausar</button>
-  <button onclick="mostrarInputs('C')">📤 Enviar</button>
+  <button onclick="enviar('C')">📤 Enviar</button>
   <div class="tempo" id="tempo_C">⏱ 00:00</div>
 </div>
 
@@ -143,26 +143,29 @@ function atualizar(id) {
   document.getElementById(`tempo_${id}`).innerText = `⏱ ${m}:${s}`;
 }
 
-function mostrarInputs(id) {
+function enviar(id) {
   const treino = document.querySelector(`[data-treino="${id}"]`);
+
+  // mostra inputs
   treino.querySelectorAll('.inputs').forEach(i => i.style.display = 'block');
 
-  setTimeout(() => {
-    enviarWhatsApp(id);
-  }, 300);
-}
-
-function enviarWhatsApp(id) {
-  const treino = document.querySelector(`[data-treino="${id}"]`);
-  let msg = `Treino ${id}\n${document.getElementById('tempo_' + id).innerText}\n\n`;
+  let texto = `Treino ${id}\n${document.getElementById('tempo_' + id).innerText}\n\n`;
 
   treino.querySelectorAll('.exercicio').forEach(ex => {
     const nome = ex.querySelector('h4').innerText;
-    const vals = ex.querySelectorAll('input');
-    msg += `${nome} - Peso: ${vals[0].value}kg | Reps: ${vals[1].value} | Cal: ${vals[2].value}\n`;
+    const v = ex.querySelectorAll('input');
+    texto += `${nome} | Peso: ${v[0].value}kg | Reps: ${v[1].value} | Cal: ${v[2].value}\n`;
   });
 
-  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+  // WhatsApp
+  window.open(
+    `https://wa.me/5511995934612?text=${encodeURIComponent(texto)}`,
+    '_blank'
+  );
+
+  // Email
+  window.location.href =
+    `mailto:kauerossi1999@gmail.com?subject=Treino ${id}&body=${encodeURIComponent(texto)}`;
 }
 </script>
 
