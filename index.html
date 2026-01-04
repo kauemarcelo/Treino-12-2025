@@ -1,283 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Treino Pro</title>
-    <style>
-        /* --- Estilos de Base (Modo Escuro) --- */
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #121212;
-            color: #e0e0e0;
-            padding: 20px 0;
-        }
+<meta charset="UTF-8">
+<title>Meu Treino</title>
 
-        .container {
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-        }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
 
-        h1 { color: #ffffff; font-weight: 300; margin-bottom: 30px; }
+h1 {
+  text-align: center;
+}
 
-        /* --- Acordeão de Treinos --- */
-        details {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            text-align: left;
-        }
+.treino {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+}
 
-        details[open] { border-color: #3b82f6; }
+.exercicio {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
 
-        summary {
-            padding: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            color: #3b82f6;
-            text-transform: uppercase;
-        }
+.exercicio h4 {
+  margin: 0 0 8px 0;
+}
 
-        .conteudo-treino {
-            padding: 0 20px 20px 20px;
-            border-top: 1px solid #333;
-        }
+.exercicio input {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 6px;
+}
 
-        ol { padding-left: 20px; margin-bottom: 20px; }
-        li { margin-bottom: 8px; color: #d0d0d0; }
+.exercicio button {
+  width: 100%;
+  padding: 8px;
+  background: #2e86de;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-        /* --- Cronômetro --- */
-        .mini-timer {
-            background-color: #181818;
-            border: 1px dashed #3b82f6;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-        }
+.exercicio button:hover {
+  background: #1b4f72;
+}
 
-        .timer-display {
-            font-size: 2rem;
-            font-family: monospace;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-
-        .timer-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        .btn-start { background-color: #10b981; color: white; }
-        .btn-pause { background-color: #f59e0b; color: white; }
-        .btn-finish { background-color: #3b82f6; color: white; width: 100%; margin-top: 10px; }
-
-        /* --- Histórico e Compartilhamento --- */
-        .history-container {
-            margin-top: 40px;
-            text-align: left;
-            background-color: #181818;
-            border-radius: 12px;
-            padding: 15px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .history-title { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
-        .history-list { list-style: none; padding: 0; }
-        
-        .history-item {
-            padding: 15px 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .history-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .share-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-wa { background-color: #25d366; color: white; flex: 1; }
-        .btn-mail { background-color: #ea4335; color: white; flex: 1; }
-        .btn-clear { background: none; color: #ef4444; border: 1px solid #ef4444; margin-top: 20px; width: 100%; font-size: 0.7rem; }
-
-        .tag-treino { color: #3b82f6; font-weight: bold; }
-    </style>
+.status {
+  font-size: 13px;
+  color: green;
+  margin-top: 4px;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Meu Treino Diário</h1>
+<h1>📋 Meu Treino</h1>
 
-        <details name="treinos">
-            <summary>TREINO A: PEITO, OMBRO E TRÍCEPS</summary>
-            <div class="conteudo-treino">
-                <ol>
-                    <li>Supino Vertical</li><li>Peck Deck (ISO 3)</li><li>Supino Inclinado (Halteres)</li>
-                    <li>Supino Inclinado (Máquina)</li><li>Desenvolvimento Frontal + Lateral</li>
-                    <li>Triceps Pully + Inverso</li><li>Triceps Banco (Máquina)</li>
-                </ol>
-                <div class="mini-timer">
-                    <div class="timer-display" id="display-A">00:00:00</div>
-                    <div class="timer-buttons">
-                        <button class="btn-start" onclick="startTimer('A')">Iniciar</button>
-                        <button class="btn-pause" onclick="pauseTimer()">Pausar</button>
-                        <button class="btn-finish" onclick="saveWorkout('A')">Finalizar A</button>
-                    </div>
-                </div>
-            </div>
-        </details>
+<!-- TREINO A -->
+<div class="treino">
+<h2>Treino A – Peito / Ombro / Tríceps</h2>
 
-        <details name="treinos">
-            <summary>TREINO B: PERNA</summary>
-            <div class="conteudo-treino">
-                <ol>
-                    <li>Abdutora + Adutora</li><li>Leg 180</li><li>Agachamento Rack</li>
-                    <li>Cadeira Extensora (ISO 3)</li><li>Flexora em Pé</li><li>Flexora Sentada</li>
-                </ol>
-                <div class="mini-timer">
-                    <div class="timer-display" id="display-B">00:00:00</div>
-                    <div class="timer-buttons">
-                        <button class="btn-start" onclick="startTimer('B')">Iniciar</button>
-                        <button class="btn-pause" onclick="pauseTimer()">Pausar</button>
-                        <button class="btn-finish" onclick="saveWorkout('B')">Finalizar B</button>
-                    </div>
-                </div>
-            </div>
-        </details>
+<div class="exercicio" data-id="supino_reto">
+<h4>Supino Reto</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        <details name="treinos">
-            <summary>TREINO C: COSTAS, OMBRO E BÍCEPS</summary>
-            <div class="conteudo-treino">
-                <ol>
-                    <li>Postura</li><li>Remada Cavalinho</li><li>Remada Articulada</li>
-                    <li>Pully Articulado (UNI)</li><li>Puxada Baixa + Peck Deck Inv</li>
-                    <li>Rosca Martelo + Dupla</li><li>Rosca Direta W</li>
-                </ol>
-                <div class="mini-timer">
-                    <div class="timer-display" id="display-C">00:00:00</div>
-                    <div class="timer-buttons">
-                        <button class="btn-start" onclick="startTimer('C')">Iniciar</button>
-                        <button class="btn-pause" onclick="pauseTimer()">Pausar</button>
-                        <button class="btn-finish" onclick="saveWorkout('C')">Finalizar C</button>
-                    </div>
-                </div>
-            </div>
-        </details>
+<div class="exercicio" data-id="supino_inclinado">
+<h4>Supino Inclinado</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        <div class="history-container">
-            <div class="history-title">Histórico de Atividades</div>
-            <ul class="history-list" id="historyList"></ul>
-            <button class="btn-clear" onclick="clearHistory()">Limpar Todo o Histórico</button>
-        </div>
-    </div>
+<div class="exercicio" data-id="crucifixo">
+<h4>Crucifixo</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-    <script>
-        // --- CONFIGURAÇÕES DO USUÁRIO ---
-        const MEU_WHATSAPP = "5511995934612"; // Formato Internacional
-        const MEU_EMAIL = "kauerossi1999@gmail.com";
+<div class="exercicio" data-id="desenvolvimento">
+<h4>Desenvolvimento</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        let times = { A: 0, B: 0, C: 0 };
-        let timerInterval;
+<div class="exercicio" data-id="triceps_pulley">
+<h4>Tríceps Pulley</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        function timeToString(time) {
-            let hh = Math.floor(time / 3600000);
-            let mm = Math.floor((time % 3600000) / 60000);
-            let ss = Math.floor((time % 60000) / 1000);
-            return `${hh.toString().padStart(2, "0")}:${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
-        }
+</div>
 
-        function startTimer(type) {
-            clearInterval(timerInterval);
-            let startTime = Date.now() - times[type];
-            timerInterval = setInterval(() => {
-                times[type] = Date.now() - startTime;
-                document.getElementById(`display-${type}`).innerHTML = timeToString(times[type]);
-            }, 1000);
-        }
+<!-- TREINO B -->
+<div class="treino">
+<h2>Treino B – Pernas</h2>
 
-        function pauseTimer() { clearInterval(timerInterval); }
+<div class="exercicio" data-id="agachamento">
+<h4>Agachamento</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        function saveWorkout(type) {
-            if (times[type] <= 0) return alert("Inicie o tempo primeiro!");
-            const duration = timeToString(times[type]);
-            const now = new Date();
-            const dateStr = `${now.getDate()}/${now.getMonth() + 1} às ${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}`;
+<div class="exercicio" data-id="leg_press">
+<h4>Leg Press</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-            let history = JSON.parse(localStorage.getItem("workoutHistory") || "[]");
-            history.unshift({ type: `Treino ${type}`, date: dateStr, duration: duration });
-            localStorage.setItem("workoutHistory", JSON.stringify(history));
+<div class="exercicio" data-id="extensora">
+<h4>Cadeira Extensora</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-            times[type] = 0;
-            document.getElementById(`display-${type}`).innerHTML = "00:00:00";
-            clearInterval(timerInterval);
-            renderHistory();
-        }
+<div class="exercicio" data-id="flexora">
+<h4>Mesa Flexora</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        // --- COMPARTILHAMENTO ---
-        function shareWhatsApp(type, date, duration) {
-            const msg = `💪 *RELATÓRIO DE TREINO*\n\n📌 *${type}*\n📅 Data: ${date}\n⏱️ Duração: ${duration}\n\nConcluído! 🔥`;
-            window.open(`https://wa.me/${MEU_WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+<div class="exercicio" data-id="panturrilha">
+<h4>Panturrilha</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        function shareEmail(type, date, duration) {
-            const subject = `Relatório: ${type} - ${date}`;
-            const body = `Resumo do Treino:\n\nTreino: ${type}\nData: ${date}\nDuração: ${duration}\n\nEnviado via App de Treino.`;
-            window.location.href = `mailto:${MEU_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        }
+</div>
 
-        function renderHistory() {
-            const list = document.getElementById("historyList");
-            const history = JSON.parse(localStorage.getItem("workoutHistory") || "[]");
-            list.innerHTML = history.map(item => `
-                <li class="history-item">
-                    <div class="history-info">
-                        <span><span class="tag-treino">${item.type}</span> - ${item.date}</span>
-                        <span style="color: #10b981; font-weight: bold;">${item.duration}</span>
-                    </div>
-                    <div class="share-buttons">
-                        <button class="btn-wa" onclick="shareWhatsApp('${item.type}', '${item.date}', '${item.duration}')">Enviar Whats</button>
-                        <button class="btn-mail" onclick="shareEmail('${item.type}', '${item.date}', '${item.duration}')">Enviar E-mail</button>
-                    </div>
-                </li>
-            `).join('');
-        }
+<!-- TREINO C -->
+<div class="treino">
+<h2>Treino C – Costas / Bíceps</h2>
 
-        function clearHistory() {
-            if(confirm("Deseja apagar todo o histórico de treinos?")) {
-                localStorage.removeItem("workoutHistory");
-                renderHistory();
-            }
-        }
+<div class="exercicio" data-id="puxada">
+<h4>Puxada na Frente</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
 
-        renderHistory();
-    </script>
+<div class="exercicio" data-id="remada">
+<h4>Remada Curvada</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
+
+<div class="exercicio" data-id="rosca_direta">
+<h4>Rosca Direta</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
+
+<div class="exercicio" data-id="rosca_alternada">
+<h4>Rosca Alternada</h4>
+<input type="number" placeholder="Peso (kg)" class="peso">
+<input type="number" placeholder="Repetições" class="reps">
+<input type="number" placeholder="Calorias" class="calorias">
+<button onclick="salvar(this)">Salvar</button>
+<p class="status"></p>
+</div>
+
+</div>
+
+<script>
+function salvar(botao) {
+  const ex = botao.closest('.exercicio');
+  const id = ex.dataset.id;
+
+  const dados = {
+    peso: ex.querySelector('.peso').value,
+    reps: ex.querySelector('.reps').value,
+    calorias: ex.querySelector('.calorias').value,
+    data: new Date().toLocaleString()
+  };
+
+  localStorage.setItem(id, JSON.stringify(dados));
+  ex.querySelector('.status').innerText = "✅ Salvo";
+}
+
+window.onload = () => {
+  document.querySelectorAll('.exercicio').forEach(ex => {
+    const salvo = localStorage.getItem(ex.dataset.id);
+    if (salvo) {
+      const d = JSON.parse(salvo);
+      ex.querySelector('.peso').value = d.peso;
+      ex.querySelector('.reps').value = d.reps;
+      ex.querySelector('.calorias').value = d.calorias;
+      ex.querySelector('.status').innerText = "📂 }
+  });
+};
+</script>
+
 </body>
 </html>
+"; 
+    
