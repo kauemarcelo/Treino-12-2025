@@ -1,268 +1,244 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<title>Relatório de Treino</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Treino</title>
-
-<meta name="theme-color" content="#0f172a">
-<meta name="apple-mobile-web-app-capable" content="yes">
 
 <style>
-:root{
-  --bg:#0f172a;--card:#111827;--border:#1f2937;
-  --text:#e5e7eb;--muted:#9ca3af;
-  --primary:#2563eb;--success:#16a34a;
-  --send:#475569;--danger:#7f1d1d;
-}
-*{box-sizing:border-box}
 body{
-  margin:0;font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);color:var(--text);padding:16px
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#0f172a;
+  color:#fff;
 }
-h1{text-align:center;margin-bottom:20px}
-h2{margin:10px 0}
-
-.treino{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;margin-bottom:14px
+header{
+  background:#14532d;
+  padding:15px;
+  text-align:center;
+  font-weight:bold;
 }
-.treino-header{
-  padding:14px;cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center
+.container{
+  padding:15px;
 }
-.treino-header span{font-size:22px;color:var(--muted)}
-.treino-body{display:none;padding:14px;border-top:1px solid var(--border)}
-
-.controles{
-  display:flex;gap:10px;flex-wrap:wrap;justify-content:center
+select, button{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:none;
+  border-radius:6px;
+  font-size:15px;
 }
-.controles button{
-  flex:1;min-width:110px;
-  padding:12px;border:none;border-radius:12px;
-  font-size:14px;color:#fff;cursor:pointer
+select{
+  background:#020617;
+  color:#fff;
 }
-.btn-iniciar{background:var(--primary)}
-.btn-finalizar{background:var(--success)}
-.btn-enviar{background:var(--send)}
-.tempo{width:100%;text-align:center;margin-top:10px;color:var(--muted)}
-
-.exercicio{
-  border:1px solid var(--border);
-  padding:10px;border-radius:10px;margin-top:10px
+button{
+  cursor:pointer;
+  background:#16a34a;
+  color:#fff;
 }
-
+button.secondary{
+  background:#334155;
+}
+.timer{
+  text-align:center;
+  font-size:28px;
+  margin:10px 0;
+}
+.card{
+  background:#022c22;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
 .modal{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.85);
-  justify-content:center;align-items:center;z-index:50
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  align-items:center;
+  justify-content:center;
 }
 .modal-content{
-  background:var(--card);width:100%;max-width:520px;
-  max-height:90vh;padding:16px;border-radius:16px;overflow:auto
-}
-.modal-content input{
-  width:100%;padding:10px;margin:6px 0 12px;
-  border-radius:10px;border:1px solid var(--border);
-  background:#020617;color:var(--text)
-}
-.modal-actions{
-  display:flex;gap:10px;flex-wrap:wrap;margin-top:16px
+  background:#022c22;
+  padding:15px;
+  width:90%;
+  max-width:400px;
+  border-radius:10px;
 }
 .modal-actions button{
-  flex:1;padding:12px;border:none;border-radius:12px;
-  font-size:15px;color:#fff;cursor:pointer
+  margin-top:6px;
 }
-
-#historico div{
-  background:#111827;
-  border:1px solid #1f2937;
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:10px
+pre{
+  white-space:pre-wrap;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🏋️ Meu Treino</h1>
+<header>📋 RELATÓRIO DE TREINO</header>
 
-<div id="treinos"></div>
+<div class="container">
 
-<h2>📋 Histórico de Treinos</h2>
-<button onclick="limparHistorico()" style="background:#7f1d1d;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;margin-bottom:12px">
-🗑️ Limpar histórico
-</button>
+<select id="treinoSelect">
+  <option value="Treino A">Treino A</option>
+  <option value="Treino B">Treino B</option>
+  <option value="Treino C">Treino C</option>
+</select>
+
+<div class="timer" id="timer">00:00</div>
+
+<button onclick="iniciar()">▶️ Iniciar</button>
+<button class="secondary" onclick="finalizar()">⏹️ Finalizar</button>
+
+<h3>📚 Histórico</h3>
 <div id="historico"></div>
 
+</div>
+
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
-    <h3>📊 Registro do Treino</h3>
-    <div id="campos"></div>
-
-    <hr>
-
-    <label>📱 WhatsApp</label>
-    <input id="destinoWhats" placeholder="11999999999">
-
-    <label>✉️ E-mail</label>
-    <input id="destinoEmail" placeholder="email@email.com">
+    <h3>📤 Exportar relatório</h3>
+    <pre id="preview"></pre>
 
     <div class="modal-actions">
-      <button onclick="fecharModal()" style="background:#64748b">⬅️ Voltar</button>
-      <button onclick="enviarWhats()" style="background:#22c55e">📲 Whats</button>
-      <button onclick="enviarEmail()" style="background:#f59e0b">✉️ Email</button>
+      <button onclick="fecharModal()" class="secondary">⬅️ Voltar</button>
+
+      <button onclick="enviarWhats(0)">📲 Kaue – 11995934612</button>
+      <button onclick="enviarWhats(1)">📲 Lucas – 11982668958</button>
+
+      <button onclick="enviarEmail(0)">✉️ Kaue – Gmail</button>
+      <button onclick="enviarEmail(1)">✉️ Lucas – Gmail</button>
     </div>
   </div>
 </div>
 
 <script>
-const treinos = {
-A:[
-"Supino Vertical","Peck Deck (isometria 3 seg)","Supino Inclinado Halteres",
-"Supino Inclinado Máquina","Desenv. Frontal + Lateral (Máquina)",
-"Tríceps Pully + Tríceps Inverso","Tríceps Banco (Máquina)"
-],
-B:[
-"Adutora e Abdutora (3x20)","Leg 180","Agachamento Rack",
-"Cadeira Extensora","Flexora em Pé","Flexora Sentada"
-],
-C:[
-"Postura","Remada Cavalinho","Remada Articulada","Pully Articulado",
-"Puxada Baixa (Anilha) + Voo (Peck Deck)",
-"Rosca Martelo (Corda) + Rosca Dupla","Rosca Direta (W)"
-]
+// ================= CONTATOS =================
+const contatos = {
+  whats: [
+    { nome:'Kaue', numero:'11995934612' },
+    { nome:'Lucas', numero:'11982668958' }
+  ],
+  email: [
+    { nome:'Kaue', endereco:'kauerossi1999@gmail.com' },
+    { nome:'Lucas', endereco:'lcasgalindo@gmail.com' }
+  ]
 };
 
-const timers={},historicoKey='historicoTreinos';
-let treinoAtual='',salvarAoAbrir=false;
+// ================= TREINOS =================
+let inicio = null;
+let intervalo = null;
+let tempo = 0;
+let treinoAtual = '';
 
-const treinosDiv=document.getElementById('treinos');
-Object.keys(treinos).forEach(t=>{
-treinosDiv.innerHTML+=`
-<div class="treino">
-  <div class="treino-header" onclick="toggleTreino('${t}')">
-    <h2>Treino ${t}</h2><span id="icon_${t}">+</span>
-  </div>
-  <div class="treino-body" id="body_${t}">
-    <div class="controles">
-      <button class="btn-iniciar" onclick="iniciar('${t}')">▶️ Iniciar</button>
-      <button class="btn-finalizar" onclick="finalizar('${t}')">✅ Finalizar</button>
-      <button class="btn-enviar" onclick="abrirFormulario('${t}',false)">📤 Enviar</button>
-      <div class="tempo" id="tempo_${t}">⏱️ 00:00</div>
-    </div>
-    ${treinos[t].map(e=>`<div class="exercicio">${e}</div>`).join('')}
-  </div>
-</div>`;
-});
-
-function toggleTreino(id){
-['A','B','C'].forEach(t=>{
-document.getElementById('body_'+t).style.display='none';
-document.getElementById('icon_'+t).innerText='+';
-});
-document.getElementById('body_'+id).style.display='block';
-document.getElementById('icon_'+id).innerText='−';
-}
-
-function iniciar(id){
-timers[id]={start:Date.now()};
-setInterval(()=>atualizar(id),1000);
-}
-
-function atualizar(id){
-const total=Math.floor((Date.now()-timers[id].start)/1000);
-const h=Math.floor(total/3600);
-const m=Math.floor((total%3600)/60);
-const s=total%60;
-document.getElementById('tempo_'+id).innerText=
-h>0?`⏱️ ${h}h ${String(m).padStart(2,'0')}min`
-:`⏱️ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-
-function finalizar(id){abrirFormulario(id,true);}
-
-function abrirFormulario(id,salvar){
-treinoAtual=id;salvarAoAbrir=salvar;
-const campos=document.getElementById('campos');campos.innerHTML='';
-document.querySelectorAll('#body_'+id+' .exercicio').forEach(ex=>{
-campos.innerHTML+=`
-<strong>${ex.innerText}</strong>
-<input placeholder="Peso (kg)">
-<input placeholder="Repetições">
-`;
-});
-document.getElementById('modal').style.display='flex';
-}
-
-function fecharModal(){document.getElementById('modal').style.display='none';}
-
-function gerarRegistro(){
-const ex=[],inputs=document.querySelectorAll('#campos input');
-document.querySelectorAll('#campos strong').forEach((e,i)=>{
-ex.push({nome:e.innerText,peso:inputs[i*2].value||'0',reps:inputs[i*2+1].value||'0'});
-});
-return{
-treino:treinoAtual,
-data:new Date().toLocaleString('pt-BR'),
-tempo:document.getElementById('tempo_'+treinoAtual).innerText,
-exercicios:ex
+const exerciciosPadrao = {
+  "Treino A":[
+    "Supino Vertical",
+    "Peck Deck (isometria 3 seg)",
+    "Supino Inclinado Halteres",
+    "Supino Inclinado Máquina",
+    "Desenvolvimento Frontal + Lateral (Máquina)",
+    "Tríceps Pully + Tríceps Inverso",
+    "Tríceps Banco (Máquina)"
+  ],
+  "Treino B":[
+    "Adutora + Abdutora",
+    "Leg 180",
+    "Agachamento Rack",
+    "Cadeira Extensora",
+    "Flexora em Pé",
+    "Flexora Sentada"
+  ],
+  "Treino C":[
+    "Postura",
+    "Remada Cavalinho",
+    "Remada Articulada",
+    "Pully Articulado",
+    "Puxada Baixa + Desenvolvimento Voo",
+    "Rosca Martelo + Rosca Dupla",
+    "Rosca Direta (W)"
+  ]
 };
+
+function iniciar(){
+  if(intervalo) return;
+  treinoAtual = document.getElementById('treinoSelect').value;
+  inicio = new Date();
+  intervalo = setInterval(()=>{
+    tempo++;
+    document.getElementById('timer').innerText =
+      String(Math.floor(tempo/60)).padStart(2,'0') + ':' +
+      String(tempo%60).padStart(2,'0');
+  },1000);
 }
 
-function salvarRegistro(){
-const h=JSON.parse(localStorage.getItem(historicoKey)||'[]');
-h.push(gerarRegistro());
-localStorage.setItem(historicoKey,JSON.stringify(h));
-renderHistorico();
+function finalizar(){
+  if(!intervalo) return;
+  clearInterval(intervalo);
+  intervalo = null;
+
+  const data = new Date().toLocaleString();
+
+  let texto = `💪 RELATÓRIO DE TREINO\n\n`;
+  texto += `🏋️ ${treinoAtual}\n`;
+  texto += `📅 Data: ${data}\n`;
+  texto += `⏱️ Duração: ${document.getElementById('timer').innerText}\n\n`;
+  texto += `✅ Concluído!\n\n🏋️ Exercícios:\n`;
+
+  exerciciosPadrao[treinoAtual].forEach(e=>{
+    texto += `• ${e} – 0kg | 0 reps\n`;
+  });
+
+  salvarHistorico(texto);
+  document.getElementById('preview').innerText = texto;
+  abrirModal();
+
+  tempo = 0;
+  document.getElementById('timer').innerText = '00:00';
+}
+
+// ================= HISTÓRICO =================
+function salvarHistorico(texto){
+  const lista = JSON.parse(localStorage.getItem('historicoTreino') || '[]');
+  lista.unshift(texto);
+  localStorage.setItem('historicoTreino', JSON.stringify(lista));
+  renderHistorico();
 }
 
 function renderHistorico(){
-const div=document.getElementById('historico');div.innerHTML='';
-JSON.parse(localStorage.getItem(historicoKey)||'[]').reverse().forEach(r=>{
-div.innerHTML+=`
-<div>
-💪 <strong>Treino ${r.treino}</strong><br>
-📅 ${r.data}<br>
-${r.tempo}
-</div>`;
-});
+  const div = document.getElementById('historico');
+  div.innerHTML = '';
+  const lista = JSON.parse(localStorage.getItem('historicoTreino') || '[]');
+  lista.forEach(t=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerText = t;
+    div.appendChild(card);
+  });
 }
 
-function textoExport(){
-const r=gerarRegistro();
-let t=`💪 *RELATÓRIO DE TREINO*
-
-➡️ *Treino ${r.treino}*
-📅 Data: ${r.data}
-⏱️ Duração: ${r.tempo}
-
-🔥 Concluído!
-
-🏆 Exercícios:
-`;
-r.exercicios.forEach(e=>{
-t+=`- ${e.nome} — ${e.peso}kg | ${e.reps} reps\n`;
-});
-return t;
+// ================= MODAL =================
+function abrirModal(){
+  document.getElementById('modal').style.display = 'flex';
+}
+function fecharModal(){
+  document.getElementById('modal').style.display = 'none';
 }
 
-function enviarWhats(){
-if(salvarAoAbrir) salvarRegistro();
-window.open(`https://wa.me/55${destinoWhats.value}?text=${encodeURIComponent(textoExport())}`);
+// ================= EXPORTAÇÃO =================
+function enviarWhats(i){
+  window.open(
+    `https://wa.me/55${contatos.whats[i].numero}?text=${encodeURIComponent(document.getElementById('preview').innerText)}`
+  );
 }
 
-function enviarEmail(){
-if(salvarAoAbrir) salvarRegistro();
-location.href=`mailto:${destinoEmail.value}?subject=Relatório de Treino ${treinoAtual}&body=${encodeURIComponent(textoExport())}`;
-}
-
-function limparHistorico(){
-if(confirm('Apagar todo o histórico?')){
-localStorage.removeItem(historicoKey);
-renderHistorico();
-}
+function enviarEmail(i){
+  location.href =
+    `mailto:${contatos.email[i].endereco}?subject=Relatório de Treino&body=${encodeURIComponent(document.getElementById('preview').innerText)}`;
 }
 
 renderHistorico();
