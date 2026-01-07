@@ -12,8 +12,8 @@
 :root{
   --bg:#0f172a;--card:#111827;--border:#1f2937;
   --text:#e5e7eb;--muted:#9ca3af;
-  --primary:#3b82f6;--success:#16a34a;
-  --send:#475569;--back:#64748b;
+  --primary:#2563eb;--success:#16a34a;
+  --send:#475569;--danger:#7f1d1d;
 }
 *{box-sizing:border-box}
 body{
@@ -21,6 +21,7 @@ body{
   background:var(--bg);color:var(--text);padding:16px
 }
 h1{text-align:center;margin-bottom:20px}
+h2{margin:10px 0}
 
 .treino{
   background:var(--card);border:1px solid var(--border);
@@ -72,8 +73,6 @@ h1{text-align:center;margin-bottom:20px}
   flex:1;padding:12px;border:none;border-radius:12px;
   font-size:15px;color:#fff;cursor:pointer
 }
-.btn-back{background:var(--back)}
-hr{border-color:#1f2937;margin:20px 0}
 
 #historico div{
   background:#111827;
@@ -89,41 +88,12 @@ hr{border-color:#1f2937;margin:20px 0}
 
 <h1>🏋️ Meu Treino</h1>
 
-<script>
-/* ================= TREINOS ATUALIZADOS ================= */
-const treinos = {
-  A: [
-    "Supino Vertical",
-    "Peck Deck (isometria 3 seg)",
-    "Supino Inclinado Halteres",
-    "Supino Inclinado Máquina",
-    "Desenvolvimento Frontal + Desenvolvimento Lateral (Máquina)",
-    "Tríceps Pully + Tríceps Inverso",
-    "Tríceps Banco (Máquina)"
-  ],
-  B: [
-    "Adutora e Abdutora (3x20)",
-    "Leg 180",
-    "Agachamento Rack",
-    "Cadeira Extensora",
-    "Flexora em Pé",
-    "Flexora Sentada"
-  ],
-  C: [
-    "Postura",
-    "Remada Cavalinho",
-    "Remada Articulada",
-    "Pully Articulado",
-    "Puxada Baixa (Anilha) + Desenvolvimento Voo (Peck Deck)",
-    "Rosca Martelo (Corda) + Rosca Dupla",
-    "Rosca Direta (W)"
-  ]
-};
-</script>
-
 <div id="treinos"></div>
 
-<h2 style="margin-top:30px">📋 Histórico de Treinos</h2>
+<h2>📋 Histórico de Treinos</h2>
+<button onclick="limparHistorico()" style="background:#7f1d1d;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;margin-bottom:12px">
+🗑️ Limpar histórico
+</button>
 <div id="historico"></div>
 
 <div class="modal" id="modal">
@@ -140,125 +110,159 @@ const treinos = {
     <input id="destinoEmail" placeholder="email@email.com">
 
     <div class="modal-actions">
-      <button class="btn-back" onclick="fecharModal()">⬅️ Voltar</button>
-      <button style="background:#22c55e" onclick="enviarWhats()">📲 Whats</button>
-      <button style="background:#f59e0b" onclick="enviarEmail()">✉️ Email</button>
+      <button onclick="fecharModal()" style="background:#64748b">⬅️ Voltar</button>
+      <button onclick="enviarWhats()" style="background:#22c55e">📲 Whats</button>
+      <button onclick="enviarEmail()" style="background:#f59e0b">✉️ Email</button>
     </div>
   </div>
 </div>
 
 <script>
+const treinos = {
+A:[
+"Supino Vertical","Peck Deck (isometria 3 seg)","Supino Inclinado Halteres",
+"Supino Inclinado Máquina","Desenv. Frontal + Lateral (Máquina)",
+"Tríceps Pully + Tríceps Inverso","Tríceps Banco (Máquina)"
+],
+B:[
+"Adutora e Abdutora (3x20)","Leg 180","Agachamento Rack",
+"Cadeira Extensora","Flexora em Pé","Flexora Sentada"
+],
+C:[
+"Postura","Remada Cavalinho","Remada Articulada","Pully Articulado",
+"Puxada Baixa (Anilha) + Voo (Peck Deck)",
+"Rosca Martelo (Corda) + Rosca Dupla","Rosca Direta (W)"
+]
+};
+
 const timers={},historicoKey='historicoTreinos';
 let treinoAtual='',salvarAoAbrir=false;
 
 const treinosDiv=document.getElementById('treinos');
 Object.keys(treinos).forEach(t=>{
-  treinosDiv.innerHTML+=`
-  <div class="treino">
-    <div class="treino-header" onclick="toggleTreino('${t}')">
-      <h2>Treino ${t}</h2><span id="icon_${t}">+</span>
+treinosDiv.innerHTML+=`
+<div class="treino">
+  <div class="treino-header" onclick="toggleTreino('${t}')">
+    <h2>Treino ${t}</h2><span id="icon_${t}">+</span>
+  </div>
+  <div class="treino-body" id="body_${t}">
+    <div class="controles">
+      <button class="btn-iniciar" onclick="iniciar('${t}')">▶️ Iniciar</button>
+      <button class="btn-finalizar" onclick="finalizar('${t}')">✅ Finalizar</button>
+      <button class="btn-enviar" onclick="abrirFormulario('${t}',false)">📤 Enviar</button>
+      <div class="tempo" id="tempo_${t}">⏱️ 00:00</div>
     </div>
-    <div class="treino-body" id="body_${t}">
-      <div class="controles">
-        <button class="btn-iniciar" onclick="iniciar('${t}')">▶️ Iniciar</button>
-        <button class="btn-finalizar" onclick="finalizar('${t}')">✅ Finalizar</button>
-        <button class="btn-enviar" onclick="abrirFormulario('${t}',false)">📤 Enviar</button>
-        <div class="tempo" id="tempo_${t}">⏱️ 00:00</div>
-      </div>
-      ${treinos[t].map(e=>`<div class="exercicio">${e}</div>`).join('')}
-    </div>
-  </div>`;
+    ${treinos[t].map(e=>`<div class="exercicio">${e}</div>`).join('')}
+  </div>
+</div>`;
 });
 
 function toggleTreino(id){
-  ['A','B','C'].forEach(t=>{
-    document.getElementById('body_'+t).style.display='none';
-    document.getElementById('icon_'+t).innerText='+';
-  });
-  document.getElementById('body_'+id).style.display='block';
-  document.getElementById('icon_'+id).innerText='−';
+['A','B','C'].forEach(t=>{
+document.getElementById('body_'+t).style.display='none';
+document.getElementById('icon_'+t).innerText='+';
+});
+document.getElementById('body_'+id).style.display='block';
+document.getElementById('icon_'+id).innerText='−';
 }
 
 function iniciar(id){
-  timers[id]={start:Date.now()};
-  setInterval(()=>atualizar(id),1000);
+timers[id]={start:Date.now()};
+setInterval(()=>atualizar(id),1000);
 }
 
 function atualizar(id){
-  const total=Math.floor((Date.now()-timers[id].start)/1000);
-  const h=Math.floor(total/3600);
-  const m=Math.floor((total%3600)/60);
-  const s=total%60;
-  document.getElementById('tempo_'+id).innerText=
-    h>0?`⏱️ ${h}h ${String(m).padStart(2,'0')}min`
-        :`⏱️ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+const total=Math.floor((Date.now()-timers[id].start)/1000);
+const h=Math.floor(total/3600);
+const m=Math.floor((total%3600)/60);
+const s=total%60;
+document.getElementById('tempo_'+id).innerText=
+h>0?`⏱️ ${h}h ${String(m).padStart(2,'0')}min`
+:`⏱️ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-function finalizar(id){ abrirFormulario(id,true); }
+function finalizar(id){abrirFormulario(id,true);}
 
 function abrirFormulario(id,salvar){
-  treinoAtual=id;salvarAoAbrir=salvar;
-  const campos=document.getElementById('campos');
-  campos.innerHTML='';
-  document.querySelectorAll('#body_'+id+' .exercicio').forEach(ex=>{
-    campos.innerHTML+=`
-      <strong>${ex.innerText}</strong>
-      <input placeholder="Peso (kg)">
-      <input placeholder="Repetições">
-    `;
-  });
-  document.getElementById('modal').style.display='flex';
+treinoAtual=id;salvarAoAbrir=salvar;
+const campos=document.getElementById('campos');campos.innerHTML='';
+document.querySelectorAll('#body_'+id+' .exercicio').forEach(ex=>{
+campos.innerHTML+=`
+<strong>${ex.innerText}</strong>
+<input placeholder="Peso (kg)">
+<input placeholder="Repetições">
+`;
+});
+document.getElementById('modal').style.display='flex';
 }
 
-function fecharModal(){ document.getElementById('modal').style.display='none'; }
+function fecharModal(){document.getElementById('modal').style.display='none';}
 
 function gerarRegistro(){
-  const ex=[],inputs=document.querySelectorAll('#campos input');
-  document.querySelectorAll('#campos strong').forEach((e,i)=>{
-    ex.push({nome:e.innerText,peso:inputs[i*2].value||'0',reps:inputs[i*2+1].value||'0'});
-  });
-  return{treino:treinoAtual,data:new Date().toLocaleString('pt-BR'),tempo:document.getElementById('tempo_'+treinoAtual).innerText,exercicios:ex};
+const ex=[],inputs=document.querySelectorAll('#campos input');
+document.querySelectorAll('#campos strong').forEach((e,i)=>{
+ex.push({nome:e.innerText,peso:inputs[i*2].value||'0',reps:inputs[i*2+1].value||'0'});
+});
+return{
+treino:treinoAtual,
+data:new Date().toLocaleString('pt-BR'),
+tempo:document.getElementById('tempo_'+treinoAtual).innerText,
+exercicios:ex
+};
 }
 
 function salvarRegistro(){
-  const h=JSON.parse(localStorage.getItem(historicoKey)||'[]');
-  h.push(gerarRegistro());
-  localStorage.setItem(historicoKey,JSON.stringify(h));
-  renderHistorico();
+const h=JSON.parse(localStorage.getItem(historicoKey)||'[]');
+h.push(gerarRegistro());
+localStorage.setItem(historicoKey,JSON.stringify(h));
+renderHistorico();
 }
 
 function renderHistorico(){
-  const div=document.getElementById('historico');
-  div.innerHTML='';
-  JSON.parse(localStorage.getItem(historicoKey)||'[]').reverse().forEach(r=>{
-    div.innerHTML+=`<div><strong>💪 Treino ${r.treino}</strong><br>📅 ${r.data}<br>${r.tempo}</div>`;
-  });
+const div=document.getElementById('historico');div.innerHTML='';
+JSON.parse(localStorage.getItem(historicoKey)||'[]').reverse().forEach(r=>{
+div.innerHTML+=`
+<div>
+💪 <strong>Treino ${r.treino}</strong><br>
+📅 ${r.data}<br>
+${r.tempo}
+</div>`;
+});
 }
 
 function textoExport(){
-  const r=gerarRegistro();
-  let t=`💪 *RELATÓRIO DE TREINO*
+const r=gerarRegistro();
+let t=`💪 *RELATÓRIO DE TREINO*
 
-📌 *Treino ${r.treino}*
+➡️ *Treino ${r.treino}*
 📅 Data: ${r.data}
 ⏱️ Duração: ${r.tempo}
 
 🔥 Concluído!
 
-🏋️ Exercícios:
+🏆 Exercícios:
 `;
-  r.exercicios.forEach(e=>t+=`• ${e.nome} — ${e.peso}kg | ${e.reps} reps\n`);
-  return t;
+r.exercicios.forEach(e=>{
+t+=`- ${e.nome} — ${e.peso}kg | ${e.reps} reps\n`;
+});
+return t;
 }
 
 function enviarWhats(){
-  if(salvarAoAbrir) salvarRegistro();
-  window.open(`https://wa.me/55${destinoWhats.value}?text=${encodeURIComponent(textoExport())}`);
+if(salvarAoAbrir) salvarRegistro();
+window.open(`https://wa.me/55${destinoWhats.value}?text=${encodeURIComponent(textoExport())}`);
 }
 
 function enviarEmail(){
-  if(salvarAoAbrir) salvarRegistro();
-  location.href=`mailto:${destinoEmail.value}?subject=Relatório de Treino ${treinoAtual}&body=${encodeURIComponent(textoExport())}`;
+if(salvarAoAbrir) salvarRegistro();
+location.href=`mailto:${destinoEmail.value}?subject=Relatório de Treino ${treinoAtual}&body=${encodeURIComponent(textoExport())}`;
+}
+
+function limparHistorico(){
+if(confirm('Apagar todo o histórico?')){
+localStorage.removeItem(historicoKey);
+renderHistorico();
+}
 }
 
 renderHistorico();
