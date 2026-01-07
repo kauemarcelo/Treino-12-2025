@@ -6,21 +6,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#0f172a;color:#fff}
-header{background:#14532d;padding:14px;text-align:center;font-weight:bold}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#0f172a;
+  color:#fff;
+}
+header{
+  background:#14532d;
+  padding:14px;
+  text-align:center;
+  font-weight:bold;
+}
 .container{padding:15px}
-.accordion{background:#020617;border-radius:8px;margin-bottom:10px}
-.accordion-header{padding:14px;cursor:pointer;background:#022c22;font-weight:bold}
-.accordion-content{display:none;padding:12px;background:#022c22}
-.timer{text-align:center;font-size:28px;margin:10px 0}
-.buttons{display:flex;gap:10px}
-button{flex:1;padding:12px;border:none;border-radius:6px;background:#16a34a;color:#fff;cursor:pointer}
+.accordion{
+  background:#020617;
+  border-radius:8px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+.accordion-header{
+  padding:14px;
+  cursor:pointer;
+  background:#022c22;
+  font-weight:bold;
+}
+.accordion-content{
+  display:none;
+  padding:12px;
+  background:#022c22;
+}
+.timer{
+  text-align:center;
+  font-size:28px;
+  margin:12px 0;
+}
+.buttons{
+  display:flex;
+  gap:10px;
+}
+button{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:6px;
+  background:#16a34a;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+}
 button.secondary{background:#334155}
-.card{background:#022c22;padding:12px;border-radius:8px;margin-bottom:10px;white-space:pre-wrap}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center}
-.modal-content{background:#022c22;padding:15px;width:95%;max-width:420px;border-radius:10px}
-.exercise-input{display:flex;gap:6px;margin-bottom:6px}
-.exercise-input input{width:60px;padding:6px;border-radius:4px;border:none}
+button.danger{background:#7f1d1d}
+.card{
+  background:#022c22;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:10px;
+  white-space:pre-wrap;
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  align-items:center;
+  justify-content:center;
+}
+.modal-content{
+  background:#022c22;
+  padding:15px;
+  width:90%;
+  max-width:400px;
+  border-radius:10px;
+}
 </style>
 </head>
 
@@ -40,26 +98,21 @@ button.secondary{background:#334155}
 </div>
 
 <h3>📚 Histórico</h3>
+
+<div class="buttons" style="margin-bottom:10px">
+  <button class="danger" onclick="limparHistorico()">🧹 Limpar histórico</button>
+</div>
+
 <div id="historico"></div>
 
 </div>
 
-<!-- MODAL PREENCHIMENTO -->
-<div class="modal" id="modalForm">
- <div class="modal-content">
-  <h3>🏋️ Preencher exercícios</h3>
-  <div id="formExercicios"></div>
-  <button onclick="confirmarTreino()">✅ Confirmar</button>
-  <button class="secondary" onclick="fecharForm()">⬅️ Voltar</button>
- </div>
-</div>
-
-<!-- MODAL EXPORT -->
-<div class="modal" id="modalExport">
+<!-- MODAL EXPORTAÇÃO -->
+<div class="modal" id="modal">
  <div class="modal-content">
   <h3>📤 Exportar relatório</h3>
   <pre id="preview"></pre>
-  <button onclick="fecharExport()" class="secondary">⬅️ Voltar</button>
+  <button onclick="fecharModal()" class="secondary">⬅️ Voltar</button>
   <button onclick="whats(0)">📲 Kaue</button>
   <button onclick="whats(1)">📲 Lucas</button>
   <button onclick="email(0)">✉️ Kaue</button>
@@ -68,37 +121,61 @@ button.secondary{background:#334155}
 </div>
 
 <script>
-// CONTATOS
-const whatsList=[{num:'11995934612'},{num:'11982668958'}];
-const emailList=[{mail:'kauerossi1999@gmail.com'},{mail:'lcasgalindo@gmail.com'}];
+// ===== CONTATOS =====
+const whatsList=[
+ {nome:'Kaue',num:'11995934612'},
+ {nome:'Lucas',num:'11982668958'}
+];
+const emailList=[
+ {nome:'Kaue',mail:'kauerossi1999@gmail.com'},
+ {nome:'Lucas',mail:'lcasgalindo@gmail.com'}
+];
 
-// TREINOS
+// ===== TREINOS =====
 const treinos={
  "Treino A":[
-  "Supino Vertical","Peck Deck (isometria 3 seg)","Supino Inclinado Halteres",
-  "Supino Inclinado Máquina","Desenvolvimento Frontal + Lateral (Máquina)",
-  "Tríceps Pully + Tríceps Inverso","Tríceps Banco (Máquina)"
+  "Supino Vertical",
+  "Peck Deck (isometria 3 seg)",
+  "Supino Inclinado Halteres",
+  "Supino Inclinado Máquina",
+  "Desenvolvimento Frontal + Lateral (Máquina)",
+  "Tríceps Pully + Tríceps Inverso",
+  "Tríceps Banco (Máquina)"
  ],
  "Treino B":[
-  "Adutora + Abdutora","Leg 180","Agachamento Rack",
-  "Cadeira Extensora","Flexora em Pé","Flexora Sentada"
+  "Adutora + Abdutora",
+  "Leg 180",
+  "Agachamento Rack",
+  "Cadeira Extensora",
+  "Flexora em Pé",
+  "Flexora Sentada"
  ],
  "Treino C":[
-  "Postura","Remada Cavalinho","Remada Articulada",
-  "Pully Articulado","Puxada Baixa + Desenvolvimento Voo",
-  "Rosca Martelo + Rosca Dupla","Rosca Direta (W)"
+  "Postura",
+  "Remada Cavalinho",
+  "Remada Articulada",
+  "Pully Articulado",
+  "Puxada Baixa + Desenvolvimento Voo",
+  "Rosca Martelo + Rosca Dupla",
+  "Rosca Direta (W)"
  ]
 };
 
-let treinoAtual=null, tempo=0, intervalo=null, dadosExercicios=[];
+let treinoAtual=null;
+let tempo=0;
+let intervalo=null;
 
-// RENDER TREINOS
+// ===== RENDER TREINOS (ABREM AO CLICAR) =====
 const treinosDiv=document.getElementById('treinos');
+
 Object.keys(treinos).forEach(nome=>{
  const acc=document.createElement('div');
  acc.className='accordion';
- acc.innerHTML=`<div class="accordion-header">${nome}</div>
- <div class="accordion-content">${treinos[nome].map(e=>`• ${e}`).join('<br>')}</div>`;
+ acc.innerHTML=`
+  <div class="accordion-header">${nome}</div>
+  <div class="accordion-content">
+    ${treinos[nome].map(e=>`• ${e}`).join('<br>')}
+  </div>`;
  acc.querySelector('.accordion-header').onclick=()=>{
   document.querySelectorAll('.accordion-content').forEach(c=>c.style.display='none');
   acc.querySelector('.accordion-content').style.display='block';
@@ -107,77 +184,81 @@ Object.keys(treinos).forEach(nome=>{
  treinosDiv.appendChild(acc);
 });
 
-// TIMER
+// ===== TIMER =====
 function iniciar(){
- if(intervalo||!treinoAtual) return alert('Selecione um treino');
+ if(intervalo || !treinoAtual){
+  alert('Selecione um treino');
+  return;
+ }
  intervalo=setInterval(()=>{
   tempo++;
-  timer.innerText=String(Math.floor(tempo/60)).padStart(2,'0')+':' +
-                  String(tempo%60).padStart(2,'0');
+  timer.innerText=
+    String(Math.floor(tempo/60)).padStart(2,'0')+':' +
+    String(tempo%60).padStart(2,'0');
  },1000);
 }
 
-// FINALIZAR → ABRE FORMULÁRIO
 function finalizar(){
  if(!intervalo) return;
- clearInterval(intervalo); intervalo=null;
- abrirFormulario();
-}
+ clearInterval(intervalo);
+ intervalo=null;
 
-// FORMULÁRIO
-function abrirFormulario(){
- dadosExercicios=[];
- formExercicios.innerHTML='';
- treinos[treinoAtual].forEach((e,i)=>{
-  formExercicios.innerHTML+=`
-   <div class="exercise-input">
-    <span>${e}</span>
-    <input placeholder="kg" id="kg${i}">
-    <input placeholder="reps" id="rep${i}">
-   </div>`;
- });
- modalForm.style.display='flex';
-}
-
-function confirmarTreino(){
  const data=new Date().toLocaleString();
- let txt=`💪 RELATÓRIO DE TREINO\n\n🏋️ ${treinoAtual}\n📅 ${data}\n⏱️ ${timer.innerText}\n\n✅ Concluído!\n\n🏋️ Exercícios:\n`;
- treinos[treinoAtual].forEach((e,i)=>{
-  const kg=document.getElementById(`kg${i}`).value||0;
-  const rep=document.getElementById(`rep${i}`).value||0;
-  txt+=`• ${e} – ${kg}kg | ${rep} reps\n`;
+ let texto=`💪 RELATÓRIO DE TREINO\n\n`;
+ texto+=`🏋️ ${treinoAtual}\n`;
+ texto+=`📅 ${data}\n`;
+ texto+=`⏱️ ${timer.innerText}\n\n`;
+ texto+=`✅ Concluído!\n\n🏋️ Exercícios:\n`;
+
+ treinos[treinoAtual].forEach(e=>{
+  texto+=`• ${e}\n`;
  });
- salvar(txt);
- preview.innerText=txt;
- modalForm.style.display='none';
- modalExport.style.display='flex';
- tempo=0; timer.innerText='00:00';
+
+ salvarHistorico(texto);
+ preview.innerText=texto;
+ modal.style.display='flex';
+
+ tempo=0;
+ timer.innerText='00:00';
 }
 
-// HISTÓRICO
-function salvar(t){
- const h=JSON.parse(localStorage.getItem('hist')||'[]');
- h.unshift(t);
- localStorage.setItem('hist',JSON.stringify(h));
- renderHist();
+// ===== HISTÓRICO =====
+function salvarHistorico(txt){
+ const lista=JSON.parse(localStorage.getItem('historicoTreino')||'[]');
+ lista.unshift(txt);
+ localStorage.setItem('historicoTreino',JSON.stringify(lista));
+ renderHistorico();
 }
-function renderHist(){
+
+function renderHistorico(){
  historico.innerHTML='';
- JSON.parse(localStorage.getItem('hist')||'[]')
+ JSON.parse(localStorage.getItem('historicoTreino')||'[]')
  .forEach(t=>{
-  const c=document.createElement('div');
-  c.className='card';
-  c.textContent=t;
-  historico.appendChild(c);
+  const card=document.createElement('div');
+  card.className='card';
+  card.textContent=t;
+  historico.appendChild(card);
  });
 }
-renderHist();
 
-// EXPORT
-function whats(i){window.open(`https://wa.me/55${whatsList[i].num}?text=${encodeURIComponent(preview.innerText)}`)}
-function email(i){location.href=`mailto:${emailList[i].mail}?subject=Relatório de Treino&body=${encodeURIComponent(preview.innerText)}`}
-function fecharForm(){modalForm.style.display='none'}
-function fecharExport(){modalExport.style.display='none'}
+function limparHistorico(){
+ if(!confirm('Deseja limpar todo o histórico?')) return;
+ localStorage.removeItem('historicoTreino');
+ renderHistorico();
+}
+
+renderHistorico();
+
+// ===== EXPORTAÇÃO =====
+function whats(i){
+ window.open(`https://wa.me/55${whatsList[i].num}?text=${encodeURIComponent(preview.innerText)}`);
+}
+function email(i){
+ location.href=`mailto:${emailList[i].mail}?subject=Relatório de Treino&body=${encodeURIComponent(preview.innerText)}`;
+}
+function fecharModal(){
+ modal.style.display='none';
+}
 </script>
 
 </body>
