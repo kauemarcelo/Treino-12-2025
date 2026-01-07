@@ -22,7 +22,6 @@ body{
 }
 h1{text-align:center;margin-bottom:20px}
 
-/* TREINO */
 .treino{
   background:var(--card);border:1px solid var(--border);
   border-radius:14px;margin-bottom:14px
@@ -34,7 +33,6 @@ h1{text-align:center;margin-bottom:20px}
 .treino-header span{font-size:22px;color:var(--muted)}
 .treino-body{display:none;padding:14px;border-top:1px solid var(--border)}
 
-/* CONTROLES */
 .controles{
   display:flex;gap:10px;flex-wrap:wrap;justify-content:center
 }
@@ -48,13 +46,11 @@ h1{text-align:center;margin-bottom:20px}
 .btn-enviar{background:var(--send)}
 .tempo{width:100%;text-align:center;margin-top:10px;color:var(--muted)}
 
-/* EXERCÍCIOS */
 .exercicio{
   border:1px solid var(--border);
   padding:10px;border-radius:10px;margin-top:10px
 }
 
-/* MODAL */
 .modal{
   display:none;position:fixed;inset:0;
   background:rgba(0,0,0,.85);
@@ -78,6 +74,14 @@ h1{text-align:center;margin-bottom:20px}
 }
 .btn-back{background:var(--back)}
 hr{border-color:#1f2937;margin:20px 0}
+
+#historico div{
+  background:#111827;
+  border:1px solid #1f2937;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:10px
+}
 </style>
 </head>
 
@@ -85,87 +89,60 @@ hr{border-color:#1f2937;margin:20px 0}
 
 <h1>🏋️ Meu Treino</h1>
 
-<!-- TREINO A -->
-<div class="treino">
-  <div class="treino-header" onclick="toggleTreino('A')">
-    <h2>Treino A – Peito / Ombro / Tríceps</h2><span id="icon_A">+</span>
-  </div>
-  <div class="treino-body" id="body_A">
-    <div class="controles">
-      <button class="btn-iniciar" onclick="iniciar('A')">▶️ Iniciar</button>
-      <button class="btn-finalizar" onclick="finalizar('A')">✅ Finalizar</button>
-      <button class="btn-enviar" onclick="abrirFormulario('A',false)">📤 Enviar</button>
-      <div class="tempo" id="tempo_A">⏱️ 00:00</div>
-    </div>
-    <div class="exercicio">Supino Reto</div>
-    <div class="exercicio">Supino Inclinado</div>
-    <div class="exercicio">Crucifixo</div>
-    <div class="exercicio">Desenvolvimento</div>
-    <div class="exercicio">Elevação Lateral</div>
-    <div class="exercicio">Tríceps Pulley</div>
-  </div>
-</div>
+<script>
+/* ================= TREINOS ATUALIZADOS ================= */
+const treinos = {
+  A: [
+    "Supino Vertical",
+    "Peck Deck (isometria 3 seg)",
+    "Supino Inclinado Halteres",
+    "Supino Inclinado Máquina",
+    "Desenvolvimento Frontal + Desenvolvimento Lateral (Máquina)",
+    "Tríceps Pully + Tríceps Inverso",
+    "Tríceps Banco (Máquina)"
+  ],
+  B: [
+    "Adutora e Abdutora (3x20)",
+    "Leg 180",
+    "Agachamento Rack",
+    "Cadeira Extensora",
+    "Flexora em Pé",
+    "Flexora Sentada"
+  ],
+  C: [
+    "Postura",
+    "Remada Cavalinho",
+    "Remada Articulada",
+    "Pully Articulado",
+    "Puxada Baixa (Anilha) + Desenvolvimento Voo (Peck Deck)",
+    "Rosca Martelo (Corda) + Rosca Dupla",
+    "Rosca Direta (W)"
+  ]
+};
+</script>
 
-<!-- TREINO B -->
-<div class="treino">
-  <div class="treino-header" onclick="toggleTreino('B')">
-    <h2>Treino B – Pernas</h2><span id="icon_B">+</span>
-  </div>
-  <div class="treino-body" id="body_B">
-    <div class="controles">
-      <button class="btn-iniciar" onclick="iniciar('B')">▶️ Iniciar</button>
-      <button class="btn-finalizar" onclick="finalizar('B')">✅ Finalizar</button>
-      <button class="btn-enviar" onclick="abrirFormulario('B',false)">📤 Enviar</button>
-      <div class="tempo" id="tempo_B">⏱️ 00:00</div>
-    </div>
-    <div class="exercicio">Agachamento</div>
-    <div class="exercicio">Leg Press</div>
-    <div class="exercicio">Cadeira Extensora</div>
-    <div class="exercicio">Mesa Flexora</div>
-    <div class="exercicio">Panturrilha em Pé</div>
-  </div>
-</div>
+<div id="treinos"></div>
 
-<!-- TREINO C -->
-<div class="treino">
-  <div class="treino-header" onclick="toggleTreino('C')">
-    <h2>Treino C – Costas / Bíceps</h2><span id="icon_C">+</span>
-  </div>
-  <div class="treino-body" id="body_C">
-    <div class="controles">
-      <button class="btn-iniciar" onclick="iniciar('C')">▶️ Iniciar</button>
-      <button class="btn-finalizar" onclick="finalizar('C')">✅ Finalizar</button>
-      <button class="btn-enviar" onclick="abrirFormulario('C',false)">📤 Enviar</button>
-      <div class="tempo" id="tempo_C">⏱️ 00:00</div>
-    </div>
-    <div class="exercicio">Puxada na Frente</div>
-    <div class="exercicio">Remada Curvada</div>
-    <div class="exercicio">Remada Baixa</div>
-    <div class="exercicio">Pulldown</div>
-    <div class="exercicio">Rosca Direta</div>
-    <div class="exercicio">Rosca Alternada</div>
-  </div>
-</div>
+<h2 style="margin-top:30px">📋 Histórico de Treinos</h2>
+<div id="historico"></div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <h3>📊 Registro do Treino</h3>
-
     <div id="campos"></div>
 
     <hr>
 
-    <label>📱 WhatsApp (com DDD)</label>
-    <input id="destinoWhats" placeholder="Ex: 11999999999">
+    <label>📱 WhatsApp</label>
+    <input id="destinoWhats" placeholder="11999999999">
 
     <label>✉️ E-mail</label>
-    <input id="destinoEmail" placeholder="Ex: email@email.com">
+    <input id="destinoEmail" placeholder="email@email.com">
 
     <div class="modal-actions">
       <button class="btn-back" onclick="fecharModal()">⬅️ Voltar</button>
-      <button style="background:#22c55e" onclick="enviarWhats()">📲 WhatsApp</button>
-      <button style="background:#f59e0b" onclick="enviarEmail()">✉️ E-mail</button>
+      <button style="background:#22c55e" onclick="enviarWhats()">📲 Whats</button>
+      <button style="background:#f59e0b" onclick="enviarEmail()">✉️ Email</button>
     </div>
   </div>
 </div>
@@ -173,6 +150,25 @@ hr{border-color:#1f2937;margin:20px 0}
 <script>
 const timers={},historicoKey='historicoTreinos';
 let treinoAtual='',salvarAoAbrir=false;
+
+const treinosDiv=document.getElementById('treinos');
+Object.keys(treinos).forEach(t=>{
+  treinosDiv.innerHTML+=`
+  <div class="treino">
+    <div class="treino-header" onclick="toggleTreino('${t}')">
+      <h2>Treino ${t}</h2><span id="icon_${t}">+</span>
+    </div>
+    <div class="treino-body" id="body_${t}">
+      <div class="controles">
+        <button class="btn-iniciar" onclick="iniciar('${t}')">▶️ Iniciar</button>
+        <button class="btn-finalizar" onclick="finalizar('${t}')">✅ Finalizar</button>
+        <button class="btn-enviar" onclick="abrirFormulario('${t}',false)">📤 Enviar</button>
+        <div class="tempo" id="tempo_${t}">⏱️ 00:00</div>
+      </div>
+      ${treinos[t].map(e=>`<div class="exercicio">${e}</div>`).join('')}
+    </div>
+  </div>`;
+});
 
 function toggleTreino(id){
   ['A','B','C'].forEach(t=>{
@@ -189,10 +185,13 @@ function iniciar(id){
 }
 
 function atualizar(id){
-  const ms=Date.now()-timers[id].start;
-  const m=String(Math.floor(ms/60000)).padStart(2,'0');
-  const s=String(Math.floor((ms%60000)/1000)).padStart(2,'0');
-  document.getElementById('tempo_'+id).innerText=`⏱️ ${m}:${s}`;
+  const total=Math.floor((Date.now()-timers[id].start)/1000);
+  const h=Math.floor(total/3600);
+  const m=Math.floor((total%3600)/60);
+  const s=total%60;
+  document.getElementById('tempo_'+id).innerText=
+    h>0?`⏱️ ${h}h ${String(m).padStart(2,'0')}min`
+        :`⏱️ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
 function finalizar(id){ abrirFormulario(id,true); }
@@ -211,38 +210,34 @@ function abrirFormulario(id,salvar){
   document.getElementById('modal').style.display='flex';
 }
 
-function fecharModal(){
-  document.getElementById('modal').style.display='none';
-}
+function fecharModal(){ document.getElementById('modal').style.display='none'; }
 
 function gerarRegistro(){
-  const exercicios=[];
-  const inputs=document.querySelectorAll('#campos input');
-  document.querySelectorAll('#campos strong').forEach((el,i)=>{
-    exercicios.push({
-      nome:el.innerText,
-      peso:inputs[i*2].value,
-      reps:inputs[i*2+1].value
-    });
+  const ex=[],inputs=document.querySelectorAll('#campos input');
+  document.querySelectorAll('#campos strong').forEach((e,i)=>{
+    ex.push({nome:e.innerText,peso:inputs[i*2].value||'0',reps:inputs[i*2+1].value||'0'});
   });
-  return{
-    treino:treinoAtual,
-    data:new Date().toLocaleString('pt-BR'),
-    tempo:document.getElementById('tempo_'+treinoAtual).innerText,
-    exercicios
-  };
+  return{treino:treinoAtual,data:new Date().toLocaleString('pt-BR'),tempo:document.getElementById('tempo_'+treinoAtual).innerText,exercicios:ex};
 }
 
 function salvarRegistro(){
   const h=JSON.parse(localStorage.getItem(historicoKey)||'[]');
   h.push(gerarRegistro());
   localStorage.setItem(historicoKey,JSON.stringify(h));
+  renderHistorico();
+}
+
+function renderHistorico(){
+  const div=document.getElementById('historico');
+  div.innerHTML='';
+  JSON.parse(localStorage.getItem(historicoKey)||'[]').reverse().forEach(r=>{
+    div.innerHTML+=`<div><strong>💪 Treino ${r.treino}</strong><br>📅 ${r.data}<br>${r.tempo}</div>`;
+  });
 }
 
 function textoExport(){
   const r=gerarRegistro();
-  let texto=
-`💪 *RELATÓRIO DE TREINO*
+  let t=`💪 *RELATÓRIO DE TREINO*
 
 📌 *Treino ${r.treino}*
 📅 Data: ${r.data}
@@ -252,25 +247,21 @@ function textoExport(){
 
 🏋️ Exercícios:
 `;
-  r.exercicios.forEach(e=>{
-    texto+=`• ${e.nome} — ${e.peso}kg | ${e.reps} reps\n`;
-  });
-  return texto;
+  r.exercicios.forEach(e=>t+=`• ${e.nome} — ${e.peso}kg | ${e.reps} reps\n`);
+  return t;
 }
 
 function enviarWhats(){
-  const num=document.getElementById('destinoWhats').value.trim();
-  if(!num){alert('Informe o WhatsApp');return;}
   if(salvarAoAbrir) salvarRegistro();
-  window.open(`https://wa.me/55${num}?text=${encodeURIComponent(textoExport())}`);
+  window.open(`https://wa.me/55${destinoWhats.value}?text=${encodeURIComponent(textoExport())}`);
 }
 
 function enviarEmail(){
-  const email=document.getElementById('destinoEmail').value.trim();
-  if(!email){alert('Informe o e-mail');return;}
   if(salvarAoAbrir) salvarRegistro();
-  location.href=`mailto:${email}?subject=Relatório de Treino ${treinoAtual}&body=${encodeURIComponent(textoExport())}`;
+  location.href=`mailto:${destinoEmail.value}?subject=Relatório de Treino ${treinoAtual}&body=${encodeURIComponent(textoExport())}`;
 }
+
+renderHistorico();
 </script>
 
 </body>
