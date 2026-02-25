@@ -161,11 +161,29 @@ button{
 </div>
 
 <script>
+
 let intervalo=null;
 let inicioTempo=null;
+let treinoSelecionado=null;
 
+// ===== SELECIONAR TREINO =====
+document.querySelectorAll(".card").forEach(card=>{
+  card.addEventListener("click",function(){
+    document.querySelectorAll(".card").forEach(c=>c.style.outline="none");
+    this.style.outline="3px solid #22c55e";
+    treinoSelecionado=this.querySelector("h3").innerText;
+  });
+});
+
+// ===== INICIAR =====
 function iniciar(){
  if(intervalo) return;
+
+ if(!treinoSelecionado){
+   alert("Selecione um treino antes de iniciar.");
+   return;
+ }
+
  inicioTempo=Date.now();
  intervalo=setInterval(()=>{
    const diff=Math.floor((Date.now()-inicioTempo)/1000);
@@ -175,22 +193,33 @@ function iniciar(){
  },1000);
 }
 
+// ===== FINALIZAR =====
 function finalizar(){
  if(!intervalo) return;
+
  clearInterval(intervalo);
  intervalo=null;
 
  const tempo=document.getElementById('timer').innerText;
  const data=new Date().toLocaleString();
 
- const texto=`🏋️ Treino Finalizado
+ const texto=
+`🏋️ ${treinoSelecionado}
 📅 ${data}
 ⏱️ ${tempo}`;
 
  salvarHistorico(texto);
+
+ // ===== ABRIR EMAIL AUTOMÁTICO =====
+ const assunto = encodeURIComponent("Relatório de Treino");
+ const corpo = encodeURIComponent(texto);
+
+ window.location.href = `mailto:?subject=${assunto}&body=${corpo}`;
+
  document.getElementById('timer').innerText="00:00";
 }
 
+// ===== HISTÓRICO =====
 function salvarHistorico(txt){
  const lista=JSON.parse(localStorage.getItem('historicoTreino')||'[]');
  lista.unshift(txt);
@@ -216,7 +245,7 @@ function limparHistorico(){
 }
 
 renderHistorico();
-</script>
 
+</script>
 </body>
 </html>
