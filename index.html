@@ -30,24 +30,25 @@ header{
   padding:15px;
   border-radius:8px;
   margin-bottom:15px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:scale(1.01);
 }
 
 h3{
   margin-top:0;
 }
 
-ul{
+ol{
   padding-left:18px;
+  display:none;
 }
 
 li{
   margin-bottom:6px;
-}
-
-.alternando{
-  color:#7CFC98;
-  font-size:14px;
-  margin-left:10px;
 }
 
 .timer{
@@ -104,21 +105,19 @@ button{
 
 <div class="container">
 
-<!-- TREINO A -->
-<div class="card">
+<div class="card treino-card">
 <h3>Treino A</h3>
 <ol>
-<li>Supino Reto (Máquina) +Desenvolvimento Frontal (Halteres)</li>
+<li>Supino Reto (Máquina) + Desenvolvimento Frontal (Halteres)</li>
 <li>Peck Deck + Desenvolvimento Lateral</li>
-<li>Supino Articulado 1 + as 2 </li>
+<li>Supino Articulado 1 + as 2</li>
 <li>Supino Biarticulado</li>
-<li>Tríceps Testa (Corda) +  Tríceps Corda </li>
+<li>Tríceps Testa (Corda) + Tríceps Corda</li>
 <li>Tríceps Pully</li>
 </ol>
 </div>
 
-<!-- TREINO B -->
-<div class="card">
+<div class="card treino-card">
 <h3>Treino B</h3>
 <ol>
 <li>Adutora + Abdutora</li>
@@ -131,17 +130,15 @@ button{
 </ol>
 </div>
 
-<!-- TREINO C -->
-<div class="card">
+<div class="card treino-card">
 <h3>Treino C</h3>
 <ol>
-<li>Pully Frente +  Puxada Baixa (Anilha)</li>
-<li>Pull Down +  Puxada Alta (Corda)</li>
+<li>Pully Frente + Puxada Baixa (Anilha)</li>
+<li>Pull Down + Puxada Alta (Corda)</li>
 <li>Remada Reta</li>
 <li>Remada Articulada 1 + as 2</li>
 <li>Rosca Scott</li>
-<li>Rosca Alternada + Rosca Martelo </li>
-
+<li>Rosca Alternada + Rosca Martelo</li>
 </ol>
 </div>
 
@@ -166,12 +163,23 @@ let intervalo=null;
 let inicioTempo=null;
 let treinoSelecionado=null;
 
-// ===== SELECIONAR TREINO =====
-document.querySelectorAll(".card").forEach(card=>{
+// 🔥 COLOQUE SEU EMAIL AQUI
+const emailFixo = "kauerossi1999@gmail.com";
+
+// ===== SELECIONAR E EXPANDIR =====
+document.querySelectorAll(".treino-card").forEach(card=>{
   card.addEventListener("click",function(){
-    document.querySelectorAll(".card").forEach(c=>c.style.outline="none");
+
+    document.querySelectorAll(".treino-card ol")
+      .forEach(l=>l.style.display="none");
+
+    document.querySelectorAll(".treino-card")
+      .forEach(c=>c.style.outline="none");
+
+    this.querySelector("ol").style.display="block";
     this.style.outline="3px solid #22c55e";
-    treinoSelecionado=this.querySelector("h3").innerText;
+
+    treinoSelecionado = this.querySelector("h3").innerText;
   });
 });
 
@@ -203,18 +211,28 @@ function finalizar(){
  const tempo=document.getElementById('timer').innerText;
  const data=new Date().toLocaleString();
 
- const texto=
+ const cardAtivo = [...document.querySelectorAll(".treino-card")]
+   .find(c=>c.querySelector("h3").innerText===treinoSelecionado);
+
+ const exercicios = [...cardAtivo.querySelectorAll("li")]
+   .map(li=>"- "+li.innerText)
+   .join("\n");
+
+ const texto =
 `🏋️ ${treinoSelecionado}
 📅 ${data}
-⏱️ ${tempo}`;
+⏱️ ${tempo}
+
+📋 Exercícios:
+${exercicios}`;
 
  salvarHistorico(texto);
 
- // ===== ABRIR EMAIL AUTOMÁTICO =====
  const assunto = encodeURIComponent("Relatório de Treino");
  const corpo = encodeURIComponent(texto);
 
- window.location.href = `mailto:?subject=${assunto}&body=${corpo}`;
+ window.location.href =
+   `mailto:${emailFixo}?subject=${assunto}&body=${corpo}`;
 
  document.getElementById('timer').innerText="00:00";
 }
@@ -247,5 +265,6 @@ function limparHistorico(){
 renderHistorico();
 
 </script>
+
 </body>
 </html>
