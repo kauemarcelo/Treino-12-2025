@@ -9,75 +9,91 @@
 body{
   margin:0;
   font-family:Arial, Helvetica, sans-serif;
-  background:#0f172a;
-  color:#fff;
+  background:#0b1a33;
+  color:white;
 }
+
 header{
-  background:#14532d;
-  padding:14px;
+  background:#1f6f3e;
+  padding:15px;
   text-align:center;
   font-weight:bold;
+  font-size:18px;
 }
-.container{padding:15px}
-.accordion{
-  background:#020617;
+
+.container{
+  padding:15px;
+}
+
+.card{
+  background:#0e3b2e;
+  padding:15px;
   border-radius:8px;
-  margin-bottom:10px;
-  overflow:hidden;
+  margin-bottom:15px;
 }
-.accordion-header{
-  padding:14px;
-  cursor:pointer;
-  background:#022c22;
-  font-weight:bold;
+
+h3{
+  margin-top:0;
 }
-.accordion-content{
-  display:none;
-  padding:12px;
-  background:#022c22;
+
+ul{
+  padding-left:18px;
 }
+
+li{
+  margin-bottom:6px;
+}
+
+.alternando{
+  color:#7CFC98;
+  font-size:14px;
+  margin-left:10px;
+}
+
 .timer{
   text-align:center;
   font-size:28px;
-  margin:12px 0;
+  margin:20px 0;
 }
+
 .buttons{
   display:flex;
   gap:10px;
 }
+
 button{
   flex:1;
-  padding:12px;
+  padding:14px;
   border:none;
   border-radius:6px;
-  background:#16a34a;
-  color:#fff;
-  font-size:15px;
+  font-size:16px;
   cursor:pointer;
+  font-weight:bold;
 }
-button.secondary{background:#334155}
-button.danger{background:#7f1d1d}
-.card{
-  background:#022c22;
-  padding:12px;
-  border-radius:8px;
+
+.iniciar{
+  background:#22c55e;
+  color:white;
+}
+
+.finalizar{
+  background:#334155;
+  color:white;
+}
+
+.danger{
+  background:#991b1b;
+  color:white;
+  width:100%;
+  margin-top:10px;
+}
+
+.historico-card{
+  background:#0e3b2e;
+  padding:10px;
+  border-radius:6px;
   margin-bottom:10px;
   white-space:pre-wrap;
-}
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  align-items:center;
-  justify-content:center;
-}
-.modal-content{
-  background:#022c22;
-  padding:15px;
-  width:90%;
-  max-width:400px;
-  border-radius:10px;
 }
 </style>
 </head>
@@ -88,113 +104,74 @@ button.danger{background:#7f1d1d}
 
 <div class="container">
 
-<div id="treinos"></div>
+<!-- TREINO A -->
+<div class="card">
+<h3>Treino A</h3>
+<ol>
+<li>Supino Reto (Máquina) +Desenvolvimento Frontal (Halteres)</li>
+<li>Peck Deck + Desenvolvimento Lateral</li>
+<li>Supino Articulado 1 + as 2 </li>
+<li>Supino Biarticulado</li>
+<li>Tríceps Testa (Corda) +  Tríceps Corda </li>
+<li>Tríceps Pully</li>
+</ol>
+</div>
+
+<!-- TREINO B -->
+<div class="card">
+<h3>Treino B</h3>
+<ol>
+<li>Adutora + Abdutora</li>
+<li>Leg 180 + Panturrilha</li>
+<li>Agachamento Rack</li>
+<li>Cadeira Extensora</li>
+<li>Flexora em Pé</li>
+<li>Flexora Sentada</li>
+<li>Glúteo 4 Apoio</li>
+</ol>
+</div>
+
+<!-- TREINO C -->
+<div class="card">
+<h3>Treino C</h3>
+<ol>
+<li>Pully Frente +  Puxada Baixa (Anilha)</li>
+<li>Pull Down +  Puxada Alta (Corda)</li>
+<li>Remada Reta</li>
+<li>Remada Articulada 1 + as 2</li>
+<li>Rosca Scott</li>
+<li>Rosca Alternada + Rosca Martelo </li>
+
+</ol>
+</div>
 
 <div class="timer" id="timer">00:00</div>
 
 <div class="buttons">
-  <button onclick="iniciar()">▶️ Iniciar</button>
-  <button class="secondary" onclick="finalizar()">⏹️ Finalizar</button>
+<button class="iniciar" onclick="iniciar()">▶ Iniciar</button>
+<button class="finalizar" onclick="finalizar()">⏹ Finalizar</button>
 </div>
 
-<h3>📚 Histórico</h3>
+<h3 style="margin-top:30px;">📚 Histórico</h3>
 
-<div class="buttons" style="margin-bottom:10px">
-  <button class="danger" onclick="limparHistorico()">🧹 Limpar histórico</button>
-</div>
+<button class="danger" onclick="limparHistorico()">🧹 Limpar histórico</button>
 
 <div id="historico"></div>
 
 </div>
 
-<!-- MODAL EXPORTAÇÃO -->
-<div class="modal" id="modal">
- <div class="modal-content">
-  <h3>📤 Exportar relatório</h3>
-  <pre id="preview"></pre>
-  <button onclick="fecharModal()" class="secondary">⬅️ Voltar</button>
-  <button onclick="whats(0)">📲 Kaue</button>
-  <button onclick="whats(1)">📲 Lucas</button>
-  <button onclick="email(0)">✉️ Kaue</button>
-  <button onclick="email(1)">✉️ Lucas</button>
- </div>
-</div>
-
 <script>
-// ===== CONTATOS =====
-const whatsList=[
- {nome:'Kaue',num:'11995934612'},
- {nome:'Lucas',num:'11982668958'}
-];
-const emailList=[
- {nome:'Kaue',mail:'kauerossi1999@gmail.com'},
- {nome:'Lucas',mail:'lcasgalindo@gmail.com'}
-];
-
-// ===== TREINOS =====
-const treinos={
- "Treino A":[
-  "Supino Vertical",
-  "Peck Deck (isometria 3 seg)",
-  "Supino Inclinado Halteres",
-  "Supino Inclinado Máquina",
-  "Desenvolvimento Frontal + Lateral (Máquina)",
-  "Tríceps Pully + Tríceps Inverso",
-  "Tríceps Banco (Máquina)"
- ],
- "Treino B":[
-  "Adutora + Abdutora",
-  "Leg 180",
-  "Agachamento Rack",
-  "Cadeira Extensora",
-  "Flexora em Pé",
-  "Flexora Sentada"
- ],
- "Treino C":[
-  "Postura",
-  "Remada Cavalinho",
-  "Remada Articulada",
-  "Pully Articulado",
-  "Puxada Baixa + Desenvolvimento Voo",
-  "Rosca Martelo + Rosca Dupla",
-  "Rosca Direta (W)"
- ]
-};
-
-let treinoAtual=null;
-let tempo=0;
 let intervalo=null;
+let inicioTempo=null;
 
-// ===== RENDER TREINOS (ABREM AO CLICAR) =====
-const treinosDiv=document.getElementById('treinos');
-
-Object.keys(treinos).forEach(nome=>{
- const acc=document.createElement('div');
- acc.className='accordion';
- acc.innerHTML=`
-  <div class="accordion-header">${nome}</div>
-  <div class="accordion-content">
-    ${treinos[nome].map(e=>`• ${e}`).join('<br>')}
-  </div>`;
- acc.querySelector('.accordion-header').onclick=()=>{
-  document.querySelectorAll('.accordion-content').forEach(c=>c.style.display='none');
-  acc.querySelector('.accordion-content').style.display='block';
-  treinoAtual=nome;
- };
- treinosDiv.appendChild(acc);
-});
-
-// ===== TIMER =====
 function iniciar(){
- if(intervalo || !treinoAtual){
-  alert('Selecione um treino');
-  return;
- }
+ if(intervalo) return;
+ inicioTempo=Date.now();
  intervalo=setInterval(()=>{
-  tempo++;
-  timer.innerText=
-    String(Math.floor(tempo/60)).padStart(2,'0')+':' +
-    String(tempo%60).padStart(2,'0');
+   const diff=Math.floor((Date.now()-inicioTempo)/1000);
+   const min=String(Math.floor(diff/60)).padStart(2,'0');
+   const seg=String(diff%60).padStart(2,'0');
+   document.getElementById('timer').innerText=`${min}:${seg}`;
  },1000);
 }
 
@@ -203,26 +180,17 @@ function finalizar(){
  clearInterval(intervalo);
  intervalo=null;
 
+ const tempo=document.getElementById('timer').innerText;
  const data=new Date().toLocaleString();
- let texto=`💪 RELATÓRIO DE TREINO\n\n`;
- texto+=`🏋️ ${treinoAtual}\n`;
- texto+=`📅 ${data}\n`;
- texto+=`⏱️ ${timer.innerText}\n\n`;
- texto+=`✅ Concluído!\n\n🏋️ Exercícios:\n`;
 
- treinos[treinoAtual].forEach(e=>{
-  texto+=`• ${e}\n`;
- });
+ const texto=`🏋️ Treino Finalizado
+📅 ${data}
+⏱️ ${tempo}`;
 
  salvarHistorico(texto);
- preview.innerText=texto;
- modal.style.display='flex';
-
- tempo=0;
- timer.innerText='00:00';
+ document.getElementById('timer').innerText="00:00";
 }
 
-// ===== HISTÓRICO =====
 function salvarHistorico(txt){
  const lista=JSON.parse(localStorage.getItem('historicoTreino')||'[]');
  lista.unshift(txt);
@@ -231,34 +199,23 @@ function salvarHistorico(txt){
 }
 
 function renderHistorico(){
- historico.innerHTML='';
+ const div=document.getElementById('historico');
+ div.innerHTML='';
  JSON.parse(localStorage.getItem('historicoTreino')||'[]')
  .forEach(t=>{
-  const card=document.createElement('div');
-  card.className='card';
-  card.textContent=t;
-  historico.appendChild(card);
+   const card=document.createElement('div');
+   card.className='historico-card';
+   card.textContent=t;
+   div.appendChild(card);
  });
 }
 
 function limparHistorico(){
- if(!confirm('Deseja limpar todo o histórico?')) return;
  localStorage.removeItem('historicoTreino');
  renderHistorico();
 }
 
 renderHistorico();
-
-// ===== EXPORTAÇÃO =====
-function whats(i){
- window.open(`https://wa.me/55${whatsList[i].num}?text=${encodeURIComponent(preview.innerText)}`);
-}
-function email(i){
- location.href=`mailto:${emailList[i].mail}?subject=Relatório de Treino&body=${encodeURIComponent(preview.innerText)}`;
-}
-function fecharModal(){
- modal.style.display='none';
-}
 </script>
 
 </body>
