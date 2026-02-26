@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Relatório de Treino</title>
+<title>Ficha de Exercícios / Modalidades</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -101,10 +101,11 @@ button{
 
 <body>
 
-<header>📋 RELATÓRIO DE TREINO</header>
+<header>📋 FICHA DE EXERCÍCIOS / MODALIDADES</header>
 
 <div class="container">
 
+<!-- TREINO A -->
 <div class="card treino-card">
 <h3>Treino A</h3>
 <ol>
@@ -117,6 +118,7 @@ button{
 </ol>
 </div>
 
+<!-- TREINO B -->
 <div class="card treino-card">
 <h3>Treino B</h3>
 <ol>
@@ -130,6 +132,7 @@ button{
 </ol>
 </div>
 
+<!-- TREINO C -->
 <div class="card treino-card">
 <h3>Treino C</h3>
 <ol>
@@ -139,6 +142,28 @@ button{
 <li>Remada Articulada 1 + as 2</li>
 <li>Rosca Scott</li>
 <li>Rosca Alternada + Rosca Martelo</li>
+</ol>
+</div>
+
+<!-- BOXE -->
+<div class="card treino-card">
+<h3>🥊 BOXE</h3>
+<ol>
+<li>Aquecimento</li>
+<li>Saco de Pancada</li>
+<li>Abdominais</li>
+</ol>
+</div>
+
+<!-- NATAÇÃO -->
+<div class="card treino-card">
+<h3>🏊 NATAÇÃO</h3>
+<ol>
+<li>7 Livre</li>
+<li>5 Crawl</li>
+<li>5 Costas</li>
+<li>5 Peito </li>
+<li>5  ir Crawl voltar Costas</li>
 </ol>
 </div>
 
@@ -164,7 +189,7 @@ let inicioTempo=null;
 let treinoSelecionado=null;
 
 // 🔥 COLOQUE SEU EMAIL AQUI
-const emailFixo = "kauerossi1999@gmail.com";
+const emailFixo = "seuemail@email.com";
 
 // ===== SELECIONAR E EXPANDIR =====
 document.querySelectorAll(".treino-card").forEach(card=>{
@@ -188,7 +213,7 @@ function iniciar(){
  if(intervalo) return;
 
  if(!treinoSelecionado){
-   alert("Selecione um treino antes de iniciar.");
+   alert("Selecione uma modalidade antes de iniciar.");
    return;
  }
 
@@ -223,12 +248,12 @@ function finalizar(){
 📅 ${data}
 ⏱️ ${tempo}
 
-📋 Exercícios:
+📋 Atividades:
 ${exercicios}`;
 
  salvarHistorico(texto);
 
- const assunto = encodeURIComponent("Relatório de Treino");
+ const assunto = encodeURIComponent("Relatório de Atividade");
  const corpo = encodeURIComponent(texto);
 
  window.location.href =
