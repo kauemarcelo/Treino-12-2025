@@ -105,47 +105,53 @@ button{
 
 <div class="container">
 
-<!-- TREINO A -->
 <div class="card treino-card">
-<h3>Treino A</h3>
+<h3>Treino A Peito & Tríceps</h3>
 <ol>
-<li>Supino Reto (Máquina) + Desenvolvimento Frontal (Halteres)</li>
-<li>Peck Deck + Desenvolvimento Lateral</li>
-<li>Supino Articulado 1 + as 2</li>
-<li>Supino Biarticulado</li>
-<li>Tríceps Testa (Corda) + Tríceps Corda</li>
-<li>Tríceps Pully</li>
+<li>Peck Deck ISO3</li>
+<li>Cross Over</li>
+<li>Supino Inclinado</li>
+<li>Fly Inclinado</li>
+<li>Tríceps Testa (Halteres)</li>
+<li>Tríceps Pully + Tríceps Inverso</li>
 </ol>
 </div>
 
-<!-- TREINO B -->
 <div class="card treino-card">
-<h3>Treino B</h3>
+<h3>Treino B Perna</h3>
 <ol>
-<li>Adutora + Abdutora</li>
+<li>Adutora + Abdutora 3x20</li>
 <li>Leg 180 + Panturrilha</li>
 <li>Agachamento Rack</li>
 <li>Cadeira Extensora</li>
 <li>Flexora em Pé</li>
 <li>Flexora Sentada</li>
-<li>Glúteo 4 Apoio</li>
 </ol>
 </div>
 
-<!-- TREINO C -->
 <div class="card treino-card">
-<h3>Treino C</h3>
+<h3>Treino C Costas & Bíceps</h3>
 <ol>
-<li>Pully Frente + Puxada Baixa (Anilha)</li>
-<li>Pull Down + Puxada Alta (Corda)</li>
-<li>Remada Reta</li>
-<li>Remada Articulada 1 + as 2</li>
-<li>Rosca Scott</li>
-<li>Rosca Alternada + Rosca Martelo</li>
+<li>Pully Frente</li>
+<li>Remada Cavalinho</li>
+<li>Remada Articulada</li>
+<li>Postura ISO3</li>
+<li>Rosca Inclinada</li>
+<li>Rosca Barra Romana + Rosca Martelo</li>
 </ol>
 </div>
 
-<!-- BOXE -->
+<div class="card treino-card">
+<h3>Treino D Ombros</h3>
+<ol>
+<li>Desenvolvimento Atrás Máquina</li>
+<li>Desenvolvimento Frontal Cross</li>
+<li>Desenvolvimento Lateral Máquina</li>
+<li>Puxada Alta</li>
+<li>Encolhimento + Puxada Baixa</li>
+</ol>
+</div>
+
 <div class="card treino-card">
 <h3>🥊 BOXE</h3>
 <ol>
@@ -155,15 +161,10 @@ button{
 </ol>
 </div>
 
-<!-- NATAÇÃO -->
 <div class="card treino-card">
 <h3>🏊 NATAÇÃO</h3>
 <ol>
-<li>7 Livre</li>
-<li>5 Crawl</li>
-<li>5 Costas</li>
-<li>5 Peito </li>
-<li>5  ir Crawl voltar Costas</li>
+
 </ol>
 </div>
 
@@ -183,15 +184,12 @@ button{
 </div>
 
 <script>
+let intervalo = null;
+let inicioTempo = null;
+let treinoSelecionado = null;
 
-let intervalo=null;
-let inicioTempo=null;
-let treinoSelecionado=null;
-
-// 🔥 COLOQUE SEU EMAIL AQUI
 const emailFixo = "kauerossi1999@gmail.com";
 
-// ===== SELECIONAR E EXPANDIR =====
 document.querySelectorAll(".treino-card").forEach(card=>{
   card.addEventListener("click",function(){
 
@@ -208,42 +206,42 @@ document.querySelectorAll(".treino-card").forEach(card=>{
   });
 });
 
-// ===== INICIAR =====
 function iniciar(){
- if(intervalo) return;
+  if(intervalo) return;
 
- if(!treinoSelecionado){
-   alert("Selecione uma modalidade antes de iniciar.");
-   return;
- }
+  if(!treinoSelecionado){
+    alert("Selecione uma modalidade antes de iniciar.");
+    return;
+  }
 
- inicioTempo=Date.now();
- intervalo=setInterval(()=>{
-   const diff=Math.floor((Date.now()-inicioTempo)/1000);
-   const min=String(Math.floor(diff/60)).padStart(2,'0');
-   const seg=String(diff%60).padStart(2,'0');
-   document.getElementById('timer').innerText=`${min}:${seg}`;
- },1000);
+  inicioTempo = Date.now();
+
+  intervalo = setInterval(()=>{
+    const diff = Math.floor((Date.now()-inicioTempo)/1000);
+    const min = String(Math.floor(diff/60)).padStart(2,'0');
+    const seg = String(diff%60).padStart(2,'0');
+
+    document.getElementById('timer').innerText = `${min}:${seg}`;
+  },1000);
 }
 
-// ===== FINALIZAR =====
 function finalizar(){
- if(!intervalo) return;
+  if(!intervalo) return;
 
- clearInterval(intervalo);
- intervalo=null;
+  clearInterval(intervalo);
+  intervalo = null;
 
- const tempo=document.getElementById('timer').innerText;
- const data=new Date().toLocaleString();
+  const tempo = document.getElementById('timer').innerText;
+  const data = new Date().toLocaleString();
 
- const cardAtivo = [...document.querySelectorAll(".treino-card")]
-   .find(c=>c.querySelector("h3").innerText===treinoSelecionado);
+  const cardAtivo = [...document.querySelectorAll(".treino-card")]
+    .find(c=>c.querySelector("h3").innerText===treinoSelecionado);
 
- const exercicios = [...cardAtivo.querySelectorAll("li")]
-   .map(li=>"- "+li.innerText)
-   .join("\n");
+  const exercicios = [...cardAtivo.querySelectorAll("li")]
+    .map(li=>"- " + li.innerText)
+    .join("\n");
 
- const texto =
+  const texto =
 `🏋️ ${treinoSelecionado}
 📅 ${data}
 ⏱️ ${tempo}
@@ -251,44 +249,43 @@ function finalizar(){
 📋 Atividades:
 ${exercicios}`;
 
- salvarHistorico(texto);
+  salvarHistorico(texto);
 
- const assunto = encodeURIComponent("Relatório de Atividade");
- const corpo = encodeURIComponent(texto);
+  const assunto = encodeURIComponent("Relatório de Atividade");
+  const corpo = encodeURIComponent(texto);
 
- window.location.href =
-   `mailto:${emailFixo}?subject=${assunto}&body=${corpo}`;
+  window.location.href =
+    `mailto:${emailFixo}?subject=${assunto}&body=${corpo}`;
 
- document.getElementById('timer').innerText="00:00";
+  document.getElementById('timer').innerText = "00:00";
 }
 
-// ===== HISTÓRICO =====
 function salvarHistorico(txt){
- const lista=JSON.parse(localStorage.getItem('historicoTreino')||'[]');
- lista.unshift(txt);
- localStorage.setItem('historicoTreino',JSON.stringify(lista));
- renderHistorico();
+  const lista = JSON.parse(localStorage.getItem('historicoTreino') || '[]');
+  lista.unshift(txt);
+  localStorage.setItem('historicoTreino', JSON.stringify(lista));
+  renderHistorico();
 }
 
 function renderHistorico(){
- const div=document.getElementById('historico');
- div.innerHTML='';
- JSON.parse(localStorage.getItem('historicoTreino')||'[]')
- .forEach(t=>{
-   const card=document.createElement('div');
-   card.className='historico-card';
-   card.textContent=t;
-   div.appendChild(card);
- });
+  const div = document.getElementById('historico');
+  div.innerHTML = '';
+
+  JSON.parse(localStorage.getItem('historicoTreino') || '[]')
+    .forEach(t=>{
+      const card = document.createElement('div');
+      card.className = 'historico-card';
+      card.textContent = t;
+      div.appendChild(card);
+    });
 }
 
 function limparHistorico(){
- localStorage.removeItem('historicoTreino');
- renderHistorico();
+  localStorage.removeItem('historicoTreino');
+  renderHistorico();
 }
 
 renderHistorico();
-
 </script>
 
 </body>
