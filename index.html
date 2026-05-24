@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 body{
   margin:0;
   font-family:Arial, Helvetica, sans-serif;
@@ -96,6 +97,39 @@ button{
   margin-bottom:10px;
   white-space:pre-wrap;
 }
+
+/* CONTROLE DE PESO */
+
+.salvar-peso{
+  background:#2563eb;
+  color:white;
+  width:100%;
+  margin-bottom:15px;
+}
+
+.peso-card{
+  background:#10284f;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:20px;
+}
+
+.peso-card input{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:6px;
+  box-sizing:border-box;
+}
+
+.item-peso{
+  background:#1e3a5f;
+  padding:10px;
+  border-radius:6px;
+  margin-top:10px;
+}
+
 </style>
 </head>
 
@@ -104,6 +138,32 @@ button{
 <header>📋 FICHA DE EXERCÍCIOS / MODALIDADES</header>
 
 <div class="container">
+
+<!-- BOTÃO PESO -->
+
+<button class="salvar-peso" onclick="abrirPeso()">
+⚖️ Abrir Controle de Peso
+</button>
+
+<!-- CONTROLE DE PESO -->
+
+<div class="peso-card" id="areaPeso" style="display:none;">
+
+<h3>⚖️ Controle de Peso</h3>
+
+<input type="date" id="dataPeso">
+
+<input type="number" id="peso" placeholder="Digite seu peso">
+
+<button class="salvar-peso" onclick="salvarPeso()">
+💾 Salvar Peso
+</button>
+
+<div id="listaPesos"></div>
+
+</div>
+
+<!-- TREINOS -->
 
 <div class="card treino-card">
 <h3>Treino A Peito & Tríceps</h3>
@@ -164,9 +224,10 @@ button{
 <div class="card treino-card">
 <h3>🏊 NATAÇÃO</h3>
 <ol>
-
 </ol>
 </div>
+
+<!-- TIMER -->
 
 <div class="timer" id="timer">00:00</div>
 
@@ -175,22 +236,63 @@ button{
 <button class="finalizar" onclick="finalizar()">⏹ Finalizar</button>
 </div>
 
+<!-- HISTÓRICO -->
+
 <h3 style="margin-top:30px;">📚 Histórico</h3>
 
-<button class="danger" onclick="limparHistorico()">🧹 Limpar histórico</button>
+<button class="danger" onclick="limparHistorico()">
+🧹 Limpar histórico
+</button>
 
 <div id="historico"></div>
 
 </div>
 
 <script>
+
 let intervalo = null;
 let inicioTempo = null;
 let treinoSelecionado = null;
 
 const emailFixo = "kauerossi1999@gmail.com";
 
+/* DATA AUTOMÁTICA */
+
+window.addEventListener('load', function(){
+
+  let hoje = new Date();
+
+  let dia = String(hoje.getDate()).padStart(2,'0');
+  let mes = String(hoje.getMonth()+1).padStart(2,'0');
+  let ano = hoje.getFullYear();
+
+  document.getElementById('dataPeso').value =
+    `${ano}-${mes}-${dia}`;
+
+  renderPesos();
+});
+
+/* ABRIR CONTROLE DE PESO */
+
+function abrirPeso(){
+
+  const area =
+    document.getElementById('areaPeso');
+
+  if(area.style.display === 'none'){
+
+    area.style.display = 'block';
+
+  }else{
+
+    area.style.display = 'none';
+  }
+}
+
+/* TREINOS */
+
 document.querySelectorAll(".treino-card").forEach(card=>{
+
   card.addEventListener("click",function(){
 
     document.querySelectorAll(".treino-card ol")
@@ -200,59 +302,99 @@ document.querySelectorAll(".treino-card").forEach(card=>{
       .forEach(c=>c.style.outline="none");
 
     this.querySelector("ol").style.display="block";
+
     this.style.outline="3px solid #22c55e";
 
-    treinoSelecionado = this.querySelector("h3").innerText;
+    treinoSelecionado =
+      this.querySelector("h3").innerText;
   });
 });
 
 function iniciar(){
+
   if(intervalo) return;
 
   if(!treinoSelecionado){
+
     alert("Selecione uma modalidade antes de iniciar.");
+
     return;
   }
 
   inicioTempo = Date.now();
 
   intervalo = setInterval(()=>{
-    const diff = Math.floor((Date.now()-inicioTempo)/1000);
-    const min = String(Math.floor(diff/60)).padStart(2,'0');
-    const seg = String(diff%60).padStart(2,'0');
 
-    document.getElementById('timer').innerText = `${min}:${seg}`;
+    const diff =
+      Math.floor((Date.now()-inicioTempo)/1000);
+
+    const min =
+      String(Math.floor(diff/60)).padStart(2,'0');
+
+    const seg =
+      String(diff%60).padStart(2,'0');
+
+    document.getElementById('timer').innerText =
+      `${min}:${seg}`;
+
   },1000);
 }
 
 function finalizar(){
+
   if(!intervalo) return;
 
   clearInterval(intervalo);
+
   intervalo = null;
 
-  const tempo = document.getElementById('timer').innerText;
-  const data = new Date().toLocaleString();
+  const tempo =
+    document.getElementById('timer').innerText;
 
-  const cardAtivo = [...document.querySelectorAll(".treino-card")]
+  const data =
+    new Date().toLocaleString();
+
+  const cardAtivo =
+    [...document.querySelectorAll(".treino-card")]
     .find(c=>c.querySelector("h3").innerText===treinoSelecionado);
 
-  const exercicios = [...cardAtivo.querySelectorAll("li")]
+  const exercicios =
+    [...cardAtivo.querySelectorAll("li")]
     .map(li=>"- " + li.innerText)
     .join("\n");
+
+  /* PEGA ÚLTIMO PESO */
+
+  const pesos =
+    JSON.parse(localStorage.getItem('historicoPeso') || '[]');
+
+  let ultimoPeso = "Não registrado";
+
+  if(pesos.length > 0){
+
+    ultimoPeso = `${pesos[0].peso} kg`;
+  }
+
+  /* TEXTO EMAIL */
 
   const texto =
 `🏋️ ${treinoSelecionado}
 📅 ${data}
 ⏱️ ${tempo}
 
+⚖️ Peso Atual:
+${ultimoPeso}
+
 📋 Atividades:
 ${exercicios}`;
 
   salvarHistorico(texto);
 
-  const assunto = encodeURIComponent("Relatório de Atividade");
-  const corpo = encodeURIComponent(texto);
+  const assunto =
+    encodeURIComponent("Relatório de Atividade");
+
+  const corpo =
+    encodeURIComponent(texto);
 
   window.location.href =
     `mailto:${emailFixo}?subject=${assunto}&body=${corpo}`;
@@ -261,31 +403,106 @@ ${exercicios}`;
 }
 
 function salvarHistorico(txt){
-  const lista = JSON.parse(localStorage.getItem('historicoTreino') || '[]');
+
+  const lista =
+    JSON.parse(localStorage.getItem('historicoTreino') || '[]');
+
   lista.unshift(txt);
-  localStorage.setItem('historicoTreino', JSON.stringify(lista));
+
+  localStorage.setItem(
+    'historicoTreino',
+    JSON.stringify(lista)
+  );
+
   renderHistorico();
 }
 
 function renderHistorico(){
-  const div = document.getElementById('historico');
+
+  const div =
+    document.getElementById('historico');
+
   div.innerHTML = '';
 
   JSON.parse(localStorage.getItem('historicoTreino') || '[]')
-    .forEach(t=>{
-      const card = document.createElement('div');
-      card.className = 'historico-card';
-      card.textContent = t;
-      div.appendChild(card);
-    });
+
+  .forEach(t=>{
+
+    const card = document.createElement('div');
+
+    card.className = 'historico-card';
+
+    card.textContent = t;
+
+    div.appendChild(card);
+  });
 }
 
 function limparHistorico(){
+
   localStorage.removeItem('historicoTreino');
+
   renderHistorico();
 }
 
+/* CONTROLE DE PESO */
+
+function salvarPeso(){
+
+  const data =
+    document.getElementById('dataPeso').value;
+
+  const peso =
+    document.getElementById('peso').value;
+
+  if(data === '' || peso === ''){
+
+    alert("Preencha os campos.");
+
+    return;
+  }
+
+  const lista =
+    JSON.parse(localStorage.getItem('historicoPeso') || '[]');
+
+  lista.unshift({
+    data:data,
+    peso:peso
+  });
+
+  localStorage.setItem(
+    'historicoPeso',
+    JSON.stringify(lista)
+  );
+
+  renderPesos();
+
+  document.getElementById('peso').value = '';
+}
+
+function renderPesos(){
+
+  const div =
+    document.getElementById('listaPesos');
+
+  div.innerHTML = '';
+
+  const lista =
+    JSON.parse(localStorage.getItem('historicoPeso') || '[]');
+
+  lista.forEach(item=>{
+
+    div.innerHTML += `
+      <div class="item-peso">
+      📅 ${item.data}<br>
+      ⚖️ ${item.peso} kg
+      </div>
+    `;
+  });
+}
+
 renderHistorico();
+
 </script>
 
 </body>
